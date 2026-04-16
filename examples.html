@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Examples — Agent Logbooks</title>
+<meta name="description" content="Worked examples of agent logbooks: ideation, backlog shaping, retro collector, eval workspace, background agent log." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">L</span>
+      <span>agentlogbooks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Docs</a></li>
+      <li><a href="examples.html" class="active">Examples</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="docs">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-title">Documentation</div>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="what-are-logbooks.html">What are logbooks?</a></li>
+        <li><a href="when-to-use.html">When to use a logbook</a></li>
+        <li><a href="examples.html" class="active">Examples</a></li>
+        <li><a href="storage-formats.html">Storage formats</a></li>
+        <li><a href="actions.html">Actions</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-title">Examples</div>
+      <ul class="sidebar-nav">
+        <li><a href="examples/ideation.html" class="sub">Ideation</a></li>
+        <li><a href="examples/backlog-shaping.html" class="sub">Backlog shaping</a></li>
+        <li><a href="examples/retro-collector.html" class="sub">Retro collector</a></li>
+        <li><a href="examples/eval-workspace.html" class="sub">Eval workspace</a></li>
+        <li><a href="examples/background-agent.html" class="sub">Background agent log</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-content wide">
+    <div class="breadcrumb"><a href="index.html">docs</a><span class="sep">/</span>examples</div>
+
+    <h1 style="font-size: clamp(30px, 3.8vw, 40px); letter-spacing: -0.02em; margin: 0 0 12px; line-height: 1.1;">Examples</h1>
+    <p style="color: var(--text-muted); max-width: 62ch; margin: 0 0 28px;">
+      Five worked examples. Each has a concrete schema, a query pattern, and the actions it drives. Copy a schema and adapt it for your workflow.
+    </p>
+
+    <div class="filter-bar" id="filterBar">
+      <input type="text" id="search" class="search-input" placeholder="Search examples…" />
+
+      <div class="filter-group">
+        <span class="filter-label">Storage</span>
+        <button class="chip active" data-group="storage" data-value="all">all</button>
+        <button class="chip" data-group="storage" data-value="csv">CSV</button>
+        <button class="chip" data-group="storage" data-value="jsonl">JSONL</button>
+        <button class="chip" data-group="storage" data-value="sqlite">SQLite</button>
+        <button class="chip" data-group="storage" data-value="spreadsheet">Spreadsheet</button>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Actors</span>
+        <button class="chip active" data-group="actors" data-value="all">all</button>
+        <button class="chip" data-group="actors" data-value="multi-agent">multi-agent</button>
+        <button class="chip" data-group="actors" data-value="agent-human">agent + human</button>
+        <button class="chip" data-group="actors" data-value="single-agent">single-agent</button>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Action</span>
+        <button class="chip active" data-group="action" data-value="all">all</button>
+        <button class="chip" data-group="action" data-value="commit">commit-to-tracker</button>
+        <button class="chip" data-group="action" data-value="report">generate-report</button>
+        <button class="chip" data-group="action" data-value="workshop">apply-to-workshop</button>
+        <button class="chip" data-group="action" data-value="trigger">trigger-agent</button>
+        <button class="chip" data-group="action" data-value="visualize">visualize</button>
+      </div>
+    </div>
+
+    <div class="card-grid" id="cardGrid">
+
+      <a class="card" href="examples/ideation.html"
+         data-storage="csv" data-actors="multi-agent" data-action="workshop visualize report"
+         data-text="ideation brainstorm ICE scoring converge multi-agent append">
+        <div class="card-icon">I</div>
+        <h3>Ideation logbook</h3>
+        <p>Multi-agent append-heavy brainstorming. Ideas with ICE scores sorted and filtered through CLI. Exports to Miro or a report.</p>
+        <div class="card-meta">
+          <span class="tag">CSV</span>
+          <span class="tag">multi-agent</span>
+          <span class="tag tag-accent">converge</span>
+        </div>
+      </a>
+
+      <a class="card" href="examples/backlog-shaping.html"
+         data-storage="spreadsheet" data-actors="agent-human" data-action="commit"
+         data-text="backlog shaping candidates epic split dedupe estimate Jira commit staging pre-tracker">
+        <div class="card-icon">B</div>
+        <h3>Pre-tracker backlog shaping</h3>
+        <p>Partial candidates accumulate through split/dedupe/estimate. Commit passes fully-formed entries to Jira; logbook gets <code>ticket_id</code> patched back.</p>
+        <div class="card-meta">
+          <span class="tag">Spreadsheet</span>
+          <span class="tag">agent + human</span>
+          <span class="tag tag-accent">commit-to-tracker</span>
+        </div>
+      </a>
+
+      <a class="card" href="examples/retro-collector.html"
+         data-storage="csv" data-actors="multi-agent" data-action="trigger report"
+         data-text="retro retrospective failure mode observation skill severity pattern audit">
+        <div class="card-icon">R</div>
+        <h3>Skill retro collector</h3>
+        <p>One row per observed failure mode per run. Append-only with correction rows. Severity patterns surface only across many runs.</p>
+        <div class="card-meta">
+          <span class="tag">CSV</span>
+          <span class="tag">long-lived</span>
+          <span class="tag tag-accent">audit-sensitive</span>
+        </div>
+      </a>
+
+      <a class="card" href="examples/eval-workspace.html"
+         data-storage="sqlite" data-actors="agent-human" data-action="visualize report trigger"
+         data-text="eval skill development assertion iteration run pass fail token feedback multi-table">
+        <div class="card-icon">E</div>
+        <h3>Skill development eval workspace</h3>
+        <p>Multi-table logbook: eval definitions, per-run results, iteration aggregates, human feedback — joined on <code>eval_id</code>, <code>run_id</code>, <code>iteration_id</code>.</p>
+        <div class="card-meta">
+          <span class="tag">SQLite</span>
+          <span class="tag">multi-table</span>
+          <span class="tag tag-accent">cross-session</span>
+        </div>
+      </a>
+
+      <a class="card" href="examples/background-agent.html"
+         data-storage="jsonl" data-actors="single-agent" data-action="visualize"
+         data-text="background async agent supervisor work log run stuck blocked overnight dashboard">
+        <div class="card-icon">W</div>
+        <h3>Background agent work log</h3>
+        <p>One row per meaningful step: phase, action, status, artifact_ref, next_intent, blocked_on. Supervisors query without reading transcripts.</p>
+        <div class="card-meta">
+          <span class="tag">JSONL</span>
+          <span class="tag">single-agent</span>
+          <span class="tag tag-accent">dashboard-view</span>
+        </div>
+      </a>
+
+    </div>
+
+    <p id="emptyState" style="display:none; text-align:center; color: var(--text-soft); margin-top: 40px; font-size: 14px;">
+      No logbooks match those filters.
+    </p>
+
+    <div class="page-nav">
+      <a href="when-to-use.html">
+        <span class="label">← Previous</span>
+        <span class="title">When to use a logbook</span>
+      </a>
+      <a class="next" href="storage-formats.html">
+        <span class="label">Next</span>
+        <span class="title">Storage formats →</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  const state = { storage: 'all', actors: 'all', action: 'all', q: '' };
+  const chips = document.querySelectorAll('.chip');
+  const cards = document.querySelectorAll('#cardGrid .card');
+  const search = document.getElementById('search');
+  const empty = document.getElementById('emptyState');
+
+  function apply() {
+    let visible = 0;
+    cards.forEach(card => {
+      const s = card.dataset.storage || '';
+      const a = card.dataset.actors || '';
+      const act = card.dataset.action || '';
+      const txt = (card.dataset.text + ' ' + card.textContent).toLowerCase();
+      const matchesStorage = state.storage === 'all' || s === state.storage;
+      const matchesActors = state.actors === 'all' || a === state.actors;
+      const matchesAction = state.action === 'all' || act.split(/\s+/).includes(state.action);
+      const matchesSearch = !state.q || txt.includes(state.q);
+      const show = matchesStorage && matchesActors && matchesAction && matchesSearch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    empty.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const group = chip.dataset.group;
+      document.querySelectorAll('.chip[data-group="'+group+'"]').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state[group] = chip.dataset.value;
+      apply();
+    });
+  });
+
+  search.addEventListener('input', (e) => {
+    state.q = e.target.value.trim().toLowerCase();
+    apply();
+  });
+})();
+</script>
+
+</body>
+</html>

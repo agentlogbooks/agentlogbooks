@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ideation logbook — Agent Logbooks</title>
+<link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../index.html">
+      <span class="brand-mark">L</span>
+      <span>agentlogbooks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Docs</a></li>
+      <li><a href="../examples.html" class="active">Examples</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="docs">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-title">Documentation</div>
+      <ul class="sidebar-nav">
+        <li><a href="../index.html">Overview</a></li>
+        <li><a href="../what-are-logbooks.html">What are logbooks?</a></li>
+        <li><a href="../when-to-use.html">When to use a logbook</a></li>
+        <li><a href="../examples.html">Examples</a></li>
+        <li><a href="../storage-formats.html">Storage formats</a></li>
+        <li><a href="../actions.html">Actions</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-title">Examples</div>
+      <ul class="sidebar-nav">
+        <li><a href="ideation.html" class="sub active">Ideation</a></li>
+        <li><a href="backlog-shaping.html" class="sub">Backlog shaping</a></li>
+        <li><a href="retro-collector.html" class="sub">Retro collector</a></li>
+        <li><a href="eval-workspace.html" class="sub">Eval workspace</a></li>
+        <li><a href="background-agent.html" class="sub">Background agent log</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="../index.html">docs</a><span class="sep">/</span><a href="../examples.html">examples</a><span class="sep">/</span>ideation</div>
+
+    <div class="prose-body">
+
+  <span class="hero-eyebrow" style="margin-bottom: 16px;">append-heavy · multi-agent</span>
+
+  <h1>Ideation logbook</h1>
+
+  <p class="lead">
+    Multi-agent brainstorming run where many ideas accumulate, get scored, and converge toward a short list. A flat CSV is the substrate; the CLI is where the queries live.
+  </p>
+
+  <div class="kv-grid">
+    <div class="kv-item"><div class="kv-label">Shape</div><div class="kv-value">Single flat table</div></div>
+    <div class="kv-item"><div class="kv-label">Storage</div><div class="kv-value">CSV in git</div></div>
+    <div class="kv-item"><div class="kv-label">Owner</div><div class="kv-value">Facilitator</div></div>
+    <div class="kv-item"><div class="kv-label">Lifetime</div><div class="kv-value">One brainstorming run</div></div>
+    <div class="kv-item"><div class="kv-label">Identity</div><div class="kv-value">Sequential <code>id</code></div></div>
+    <div class="kv-item"><div class="kv-label">Corrections</div><div class="kv-value">Patch in place</div></div>
+  </div>
+
+  <h2>Schema</h2>
+
+  <table class="schema-table">
+    <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>id</td><td>Sequential identifier, stable across patches and exports.</td></tr>
+      <tr><td>name</td><td>Short title — 3 to 8 words.</td></tr>
+      <tr><td>description</td><td>Prose payload. One paragraph. Free-form goes here, not in extra columns.</td></tr>
+      <tr><td>source_agent</td><td>Which specialist generated this seed (or <code>human</code>).</td></tr>
+      <tr><td>phase</td><td><code>seed</code>, <code>scamper</code>, <code>six-hats</code>, <code>reverse</code>, <code>synectics</code>.</td></tr>
+      <tr><td>tag</td><td>Cluster label — filled by the tagging pass, not the generator.</td></tr>
+      <tr><td>impact</td><td>ICE: expected value if it works (1–10).</td></tr>
+      <tr><td>confidence</td><td>ICE: how sure we are it'll work (1–10).</td></tr>
+      <tr><td>ease</td><td>ICE: how cheap it is to try (1–10).</td></tr>
+      <tr><td>ice_score</td><td>Computed <code>(impact × confidence × ease) / 10</code>. Re-computed on patch.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sample data</h2>
+
+  <div class="data-preview">id,name,source_agent,phase,tag,impact,confidence,ease,ice_score
+001,Inline comment threading on sections,explorer-ux,seed,collaboration,7,8,5,28.0
+002,Annotate risk per section header,critic,seed,risk,6,7,6,25.2
+003,Auto-dedupe near-identical seeds,generalist-1,scamper,ops,8,5,7,28.0
+004,Render sections as cards with scores,explorer-viz,reverse,ui,5,6,8,24.0
+005,One-click export of top-20 to Miro,generalist-2,synectics,export,8,7,9,50.4</div>
+
+  <h2>Common queries</h2>
+
+  <pre><code>$ logbook filter phase=synectics
+$ logbook sort ice_score --desc | head -20
+$ logbook top 10 ice_score --group tag
+$ logbook compute 'ice_score = (impact*confidence*ease)/10'</code></pre>
+
+  <p>Humans read the converge output — not the CSV directly — but the CSV is what makes the queries cheap. A single idea's full prose lives in one cell; the interesting questions ("top 10 by tag") never need to load that prose into context.</p>
+
+  <h2>Actions</h2>
+
+  <p><strong>Apply to Miro.</strong> Group top-N rows by <code>tag</code>; export each as a sticky with provenance. The workshop board is the next stage, not a mirror.</p>
+
+  <p><strong>Generate report.</strong> Render the top 20 rows with full descriptions into a converge memo for the facilitator. Snapshot, regenerated on the next pass.</p>
+
+  <p><strong>Visualize.</strong> Scatter of <code>ease</code> vs <code>impact</code> with <code>ice_score</code> bubble size, colored by <code>tag</code>.</p>
+
+  <div class="callout">
+    <div class="callout-title">Why this earns a schema</div>
+    <p>Hundreds of ideas, many agents appending in parallel, humans reviewing through filters and clusters. Rereading the whole file every time a new agent joins would be prohibitive. Patch-in-place for score updates; no supersession rows.</p>
+  </div>
+
+    </div>
+
+    <div class="page-nav">
+      <a href="../examples.html">
+        <span class="label">← All examples</span>
+        <span class="title">Examples directory</span>
+      </a>
+      <a class="next" href="backlog-shaping.html">
+        <span class="label">Next example</span>
+        <span class="title">Backlog shaping →</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

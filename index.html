@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Overview — Agent Logbooks</title>
+<meta name="description" content="A simple, structured way to make agent work build instead of restart." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">L</span>
+      <span>agentlogbooks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Docs</a></li>
+      <li><a href="examples.html">Examples</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="docs">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-title">Documentation</div>
+      <ul class="sidebar-nav">
+        <li><a href="index.html" class="active">Overview</a></li>
+        <li><a href="what-are-logbooks.html">What are logbooks?</a></li>
+        <li><a href="when-to-use.html">When to use a logbook</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="storage-formats.html">Storage formats</a></li>
+        <li><a href="actions.html">Actions</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-title">Examples</div>
+      <ul class="sidebar-nav">
+        <li><a href="examples/ideation.html" class="sub">Ideation</a></li>
+        <li><a href="examples/backlog-shaping.html" class="sub">Backlog shaping</a></li>
+        <li><a href="examples/retro-collector.html" class="sub">Retro collector</a></li>
+        <li><a href="examples/eval-workspace.html" class="sub">Eval workspace</a></li>
+        <li><a href="examples/background-agent.html" class="sub">Background agent log</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-content">
+    <div class="hero">
+      <span class="hero-eyebrow">Overview</span>
+      <h1>A simple, structured way to make agent work build instead of restart.</h1>
+      <p class="lead">
+        Logbooks are shared working state: structured entries that agents and humans can append, patch, annotate, and query over time. They keep unfinished work usable across sessions, tools, and contributors.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="what-are-logbooks.html">Read the concept →</a>
+        <a class="btn" href="examples.html">Browse examples</a>
+      </div>
+    </div>
+
+    <section class="docs-section">
+      <h2>Why logbooks?</h2>
+      <p class="lede">
+        Agents can produce a lot of valuable intermediate work: findings, candidate tasks, review notes, risk flags, and partial plans. Without a structured place for that work to live, every new pass starts over, chat history gets overloaded, and promising work disappears between runs. Logbooks solve this by giving evolving work a durable, queryable home between documents and trackers.
+      </p>
+      <p class="lede">
+        <strong>For agent builders:</strong> make multi-phase workflows more reliable. <strong>For teams:</strong> keep draft work queryable before it becomes a ticket or a report. <strong>For reviewers:</strong> see progress without reading the whole transcript.
+      </p>
+    </section>
+
+    <section class="docs-section">
+      <h2>What can logbooks enable?</h2>
+      <div class="criteria-grid">
+        <div class="criteria-card">
+          <div class="criteria-num">01</div>
+          <h4>Deep research and review</h4>
+          <p>Build multi-phase work from structured intermediate results.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">02</div>
+          <h4>Draft and staging workflows</h4>
+          <p>Shape work before committing it to Jira, docs, or reports.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">03</div>
+          <h4>Background agent supervision</h4>
+          <p>Inspect progress without reading full transcripts.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">04</div>
+          <h4>Cross-agent reuse</h4>
+          <p>Let each pass leave behind work the next pass can use.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">05</div>
+          <h4>Controlled execution</h4>
+          <p>Turn selected entries into tickets, reports, boards, or new agent runs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="docs-section">
+      <h2>Flexible by design</h2>
+      <p class="lede">
+        A logbook can live in a CSV, spreadsheet, JSONL file, SQLite database, or a purpose-built tool. What matters is not the backend. What matters is that the work is structured enough to query, update, and carry forward.
+      </p>
+    </section>
+
+    <section class="docs-section">
+      <h2>Get started</h2>
+      <div class="card-grid" style="margin-top: 12px;">
+        <a class="card" href="what-are-logbooks.html">
+          <div class="card-icon">?</div>
+          <h3>What are logbooks?</h3>
+          <p>Learn what logbooks are, how they work, and where they fit between docs, trackers, and logs.</p>
+          <div class="card-meta"><span class="tag tag-accent">concept</span></div>
+        </a>
+        <a class="card" href="when-to-use.html">
+          <div class="card-icon">⚖</div>
+          <h3>When should I use one?</h3>
+          <p>Use a simple test to tell whether you need a logbook or just a doc, chat state, or a tracker.</p>
+          <div class="card-meta"><span class="tag tag-accent">decision</span></div>
+        </a>
+        <a class="card" href="examples.html">
+          <div class="card-icon">✦</div>
+          <h3>Examples</h3>
+          <p>See logbooks for deep research, backlog shaping, eval workspaces, and background agent monitoring.</p>
+          <div class="card-meta"><span class="tag tag-accent">gallery</span></div>
+        </a>
+        <a class="card" href="storage-formats.html">
+          <div class="card-icon">◱</div>
+          <h3>Storage and actions</h3>
+          <p>Pick a backend, define a stable entry contract, and connect the logbook to reports, trackers, or downstream agent runs.</p>
+          <div class="card-meta"><span class="tag tag-accent">practice</span></div>
+        </a>
+      </div>
+    </section>
+
+    <div class="page-nav">
+      <span></span>
+      <a class="next" href="what-are-logbooks.html">
+        <span class="label">Next</span>
+        <span class="title">What are logbooks? →</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

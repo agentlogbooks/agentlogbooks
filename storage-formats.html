@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Storage formats — Agent Logbooks</title>
+<meta name="description" content="Pick the backend that fits the data, not by default. CSV, JSONL, SQLite, spreadsheet, markdown." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">L</span>
+      <span>agentlogbooks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Docs</a></li>
+      <li><a href="examples.html">Examples</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="docs">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-title">Documentation</div>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="what-are-logbooks.html">What are logbooks?</a></li>
+        <li><a href="when-to-use.html">When to use a logbook</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="storage-formats.html" class="active">Storage formats</a></li>
+        <li><a href="actions.html">Actions</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-title">Examples</div>
+      <ul class="sidebar-nav">
+        <li><a href="examples/ideation.html" class="sub">Ideation</a></li>
+        <li><a href="examples/backlog-shaping.html" class="sub">Backlog shaping</a></li>
+        <li><a href="examples/retro-collector.html" class="sub">Retro collector</a></li>
+        <li><a href="examples/eval-workspace.html" class="sub">Eval workspace</a></li>
+        <li><a href="examples/background-agent.html" class="sub">Background agent log</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="index.html">docs</a><span class="sep">/</span>storage formats</div>
+
+    <div class="prose-body">
+      <h1 style="font-size: clamp(30px, 3.8vw, 40px); letter-spacing: -0.02em; margin: 0 0 16px; line-height: 1.1;">Storage formats</h1>
+
+      <p class="lead">
+        Pick the format that fits the data, not by default. A common starting point is CSV when no stronger signal exists, but spreadsheet-first or SQLite-first are equally valid when the workflow calls for them. Migration is always available — notice the pain and migrate that specific logbook.
+      </p>
+
+      <h2>CSV</h2>
+      <p>
+        Best when every row has the same flat columns, values are short strings or numbers, and you want to open it in Excel or any text editor. Weakest when a column frequently needs nested sub-fields or when you need cross-logbook joins.
+      </p>
+      <p><strong>Use for:</strong> ideation logbooks, feedback collectors, flat decision logs.</p>
+
+      <h2>JSON Lines <span style="color: var(--text-soft); font-weight: 400;">(.jsonl)</span></h2>
+      <p>
+        One JSON object per line. Best when rows have optional or nested fields, or when column sets vary across rows. Still appendable, still greppable, still human-readable. Weakest when you want to open it in Excel or run column-based CLI ops.
+      </p>
+      <p><strong>Use for:</strong> logbooks where the schema is soft, where one row might have 4 fields and the next has 8.</p>
+
+      <h2>SQLite</h2>
+      <p>
+        Best when a logbook naturally spans multiple connected tables, when you need real queries (joins, aggregates, <code>GROUP BY</code>, indexes), or when row volume exceeds a few thousand. Trades away the open-in-any-editor inspectability but gains everything a relational database gives.
+      </p>
+      <p><strong>Use for:</strong> multi-table logbooks, logbooks that are clearly databases in disguise, or when the CLI query layer starts reimplementing SQL badly.</p>
+
+      <h2>Spreadsheet</h2>
+      <p>
+        Best when humans are primary editors or reviewers, you need visual sorting/filtering/comments, and the team prefers a UI over a CLI. Valid backend for the same logbook pattern.
+      </p>
+      <p><strong>Use for:</strong> human-heavy collaboration, low engineering overhead, non-engineers who need to interact with the data.</p>
+
+      <h2>Markdown tables</h2>
+      <p>
+        Most human-readable, worst to append programmatically, painful to query. Only use when the logbook is tiny (under 20 rows), hand-maintained, and read more often than written. Rarely the right call for agent-written logbooks.
+      </p>
+
+      <hr />
+
+      <h2>Designing a stable entry contract</h2>
+
+      <h3>Row identity</h3>
+      <p>
+        Every row needs a stable identity that survives edits, reordering, and export. Decide early: is identity a sequential id, a natural key (<code>skill_name + run_id</code>), or a generated UUID? Natural keys are readable but brittle if the key fields change. Sequential ids are simple but meaningless outside the logbook. Pick one rule and document it in the logbook header or README.
+      </p>
+
+      <h3>Field semantics</h3>
+      <p>
+        When two contributors both write a <code>priority</code> column, do they mean the same thing? Define each column in one sentence at logbook creation. If the definition drifts — one person uses "priority" for business value and another for implementation urgency — the logbook is silently corrupted. The fix is to split the column or rename it, not to hope for convergence.
+      </p>
+
+      <h3>Partial rows</h3>
+      <p>
+        Not every contributor knows every field. Decide whether missing fields are empty strings, explicit nulls, or "unknown." Pick one convention per logbook. Mixed conventions make filters unreliable.
+      </p>
+
+      <h3>Corrections vs. supersession</h3>
+      <p>
+        For audit-sensitive logbooks (retro observations, decision logs), append a correction row and mark the original. For refinement-heavy logbooks (backlog shaping, ideation scoring), patch in place — the current state matters more than the history. State the rule in the logbook header.
+      </p>
+
+      <h3>Schema versioning</h3>
+      <p>
+        When you add a column, existing rows won't have it. When you rename a column, old queries break. The principle: a schema change that silently breaks existing queries is worse than a schema that stays slightly imperfect.
+      </p>
+
+      <div class="callout">
+        <div class="callout-title">Anti-pattern: backend denial</div>
+        <p>
+          When you need joins, constraints, migrations, or stronger concurrency, the answer is not to abandon the logbook — it's to upgrade the backend. Keep the logbook abstraction but move from CSV to SQLite or Postgres. The opposite failure is <em>calling a database a logbook</em>: once you grow real foreign-key constraints, transactional updates, or an ORM, you've earned a database and should call it that.
+        </p>
+      </div>
+
+      <h2>"Isn't this just Notion or Airtable?"</h2>
+      <p>
+        A Notion database or Airtable base passes most of the logbook criteria: shared, structured, queryable, multi-contributor, persistent. They are valid backends — they belong in the "Spreadsheet" category above. What they don't provide is the <em>methodology</em> that makes a logbook operational for agent workflows — schema discipline, tool-based queries, execution actions, and orchestration. These are roles, not infrastructure.
+      </p>
+    </div>
+
+    <div class="page-nav">
+      <a href="examples.html">
+        <span class="label">← Previous</span>
+        <span class="title">Examples</span>
+      </a>
+      <a class="next" href="actions.html">
+        <span class="label">Next</span>
+        <span class="title">Actions →</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

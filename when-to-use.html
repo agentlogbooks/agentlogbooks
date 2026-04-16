@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>When to use a logbook — Agent Logbooks</title>
+<meta name="description" content="A simple test: if at least three of four signals are true, you probably have a logbook problem." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">L</span>
+      <span>agentlogbooks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Docs</a></li>
+      <li><a href="examples.html">Examples</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="docs">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-title">Documentation</div>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="what-are-logbooks.html">What are logbooks?</a></li>
+        <li><a href="when-to-use.html" class="active">When to use a logbook</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="storage-formats.html">Storage formats</a></li>
+        <li><a href="actions.html">Actions</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-title">Examples</div>
+      <ul class="sidebar-nav">
+        <li><a href="examples/ideation.html" class="sub">Ideation</a></li>
+        <li><a href="examples/backlog-shaping.html" class="sub">Backlog shaping</a></li>
+        <li><a href="examples/retro-collector.html" class="sub">Retro collector</a></li>
+        <li><a href="examples/eval-workspace.html" class="sub">Eval workspace</a></li>
+        <li><a href="examples/background-agent.html" class="sub">Background agent log</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="index.html">docs</a><span class="sep">/</span>when to use a logbook</div>
+
+    <div class="prose-body">
+      <h1 style="font-size: clamp(30px, 3.8vw, 40px); letter-spacing: -0.02em; margin: 0 0 16px; line-height: 1.1;">When to use a logbook</h1>
+
+      <p class="lead">
+        Not every piece of agent work needs structure. A quick four-part test tells you whether you have a logbook problem — or whether a document, chat state, or a tracker is the better home.
+      </p>
+
+      <h2>The four-part test</h2>
+      <p>You likely have a logbook problem when at least <strong>three</strong> of these are true. The strongest cases have all four.</p>
+
+      <div class="criteria-grid">
+        <div class="criteria-card">
+          <div class="criteria-num">01</div>
+          <h4>Writes and reads are separated</h4>
+          <p>A future reader — a tool, a later session, another contributor — needs to find something specific in the record without scanning it end-to-end. If rereading would work, a doc or a transcript is simpler.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">02</div>
+          <h4>Stable entry contract</h4>
+          <p>The outer shape is predictable enough that tools can query the logbook without understanding every entry in full. A stable envelope with a polymorphic payload counts.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">03</div>
+          <h4>Tool-queried, not reread</h4>
+          <p>Common questions are answered by filtering, sorting, traversing, or aggregating — not by loading the whole thing into context.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">04</div>
+          <h4>Outlives the session</h4>
+          <p>The state needs to be readable by a different actor or the same actor in a different session. If everything gets consumed and discarded in one conversation, it's scratch state.</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px;">
+        If fewer than three are true, you probably don't need a logbook. Write a document, use chat state, or pass a single-use artifact.
+      </p>
+
+      <h2>Heuristics that usually satisfy the test</h2>
+
+      <h3>The "deep" heuristic</h3>
+      <p>
+        When you reach for a workflow labeled <em>deep</em> — deep research, deep planning, deep review — check whether the underlying pattern (multi-phase, structured intermediates, cross-session reuse, queryable state) is present. When it is, the four criteria above are usually satisfied and a logbook is probably the right layer. When the workflow is single-pass or single-reader despite the label, it isn't.
+      </p>
+
+      <h3>The background-agent heuristic</h3>
+      <p>
+        Agents running in the background — long-running, asynchronous, or multi-instance — produce state that a supervisor wants to check without interrupting the work or reading the full transcript. "What's the agent doing right now? Which runs are stuck? What did it finish overnight?" are logbook queries.
+      </p>
+
+      <h3>The hidden-logbook signal</h3>
+      <p>
+        Many things that look like documents are logbooks in disguise. A multi-step plan is really rows: <code>section_id, title, content, status</code>. Inline comments on it are a second table joined by <code>section_id</code>. If a document is really a list of structured entries with structured annotations, and filtering or aggregating them would be valuable, extract the structure and give it a schema.
+      </p>
+
+      <div class="callout">
+        <div class="callout-title">The trade</div>
+        <p>A logbook converts repeated interpretation cost into up-front schema cost. When the same state gets touched across sessions and contributors often enough, the schema pays for itself. When it isn't — when the state is short-lived, single-reader, or still figuring out its shape — the overhead isn't worth it.</p>
+      </div>
+
+      <h2>When <em>not</em> to reach for a logbook</h2>
+      <ul>
+        <li><strong>Short-lived, single-session work</strong> — keep it in chat state.</li>
+        <li><strong>One-off handoff between two agents</strong> — use a typed artifact (JSON, YAML).</li>
+        <li><strong>Prose where the reasoning is the product</strong> — use a document.</li>
+        <li><strong>Committed tasks with workflow semantics</strong> — use a tracker.</li>
+        <li><strong>Append-only event streams for replay</strong> — use a log.</li>
+        <li><strong>Semantic recall for one agent's next turn</strong> — use a memory store.</li>
+      </ul>
+
+      <h2>The ten-second test</h2>
+      <p>
+        Six months from now, you should be able to decide in under ten seconds whether a new problem is a doc problem, a logbook problem, or a tracker problem — and if it is a logbook problem, whether to start with a flat file, a spreadsheet, or a database. If you are still deliberating, the boundaries above need sharpening.
+      </p>
+    </div>
+
+    <div class="page-nav">
+      <a href="what-are-logbooks.html">
+        <span class="label">← Previous</span>
+        <span class="title">What are logbooks?</span>
+      </a>
+      <a class="next" href="examples.html">
+        <span class="label">Next</span>
+        <span class="title">Examples →</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>

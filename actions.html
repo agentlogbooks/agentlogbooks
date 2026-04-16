@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Actions — Agent Logbooks</title>
+<meta name="description" content="A logbook that only gets queried is a reference. A logbook that drives execution is a coordination surface." />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">L</span>
+      <span>agentlogbooks</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Docs</a></li>
+      <li><a href="examples.html">Examples</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="docs">
+  <aside class="sidebar">
+    <div class="sidebar-group">
+      <div class="sidebar-title">Documentation</div>
+      <ul class="sidebar-nav">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="what-are-logbooks.html">What are logbooks?</a></li>
+        <li><a href="when-to-use.html">When to use a logbook</a></li>
+        <li><a href="examples.html">Examples</a></li>
+        <li><a href="storage-formats.html">Storage formats</a></li>
+        <li><a href="actions.html" class="active">Actions</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-group">
+      <div class="sidebar-title">Examples</div>
+      <ul class="sidebar-nav">
+        <li><a href="examples/ideation.html" class="sub">Ideation</a></li>
+        <li><a href="examples/backlog-shaping.html" class="sub">Backlog shaping</a></li>
+        <li><a href="examples/retro-collector.html" class="sub">Retro collector</a></li>
+        <li><a href="examples/eval-workspace.html" class="sub">Eval workspace</a></li>
+        <li><a href="examples/background-agent.html" class="sub">Background agent log</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="index.html">docs</a><span class="sep">/</span>actions</div>
+
+    <div class="prose-body">
+      <h1 style="font-size: clamp(30px, 3.8vw, 40px); letter-spacing: -0.02em; margin: 0 0 16px; line-height: 1.1;">Actions</h1>
+
+      <p class="lead">
+        A logbook that only gets queried is a reference. A logbook that drives execution is a coordination surface. Actions are the bridges from logbook state to external systems.
+      </p>
+
+      <p>
+        The pattern: <strong>logbook → query → action</strong>. A query selects entries by criteria. An action takes those entries and does something outside the logbook — creates tickets, generates documents, populates a workshop board, triggers agent runs.
+      </p>
+
+      <h2>Commit to tracker</h2>
+      <p>
+        Real APIs like Jira have strict schemas — a ticket requires project, issue type, summary, and often priority, assignee, story points, and more. You can't save a half-formed ticket. But shaping work is inherently partial: early entries might have a task name and component but no estimate, or a risk assessment but no assignee. The logbook is the permissive staging layer where partial entries are valid; fields get filled incrementally by different contributors across sessions until the entry is complete enough to commit.
+      </p>
+      <p>
+        The commit action validates readiness (are all target-required fields populated?), surfaces gaps (<code>filter commit_decision=approved AND estimate=null</code>), and creates tickets only from fully-formed entries. Each committed entry gets a <code>ticket_id</code> column patched back. The logbook is authoritative during shaping; after commit, the tracker is authoritative. One-way push, no sync back.
+      </p>
+
+      <h2>Apply to workshop surface</h2>
+      <p>
+        Export entries as Miro sticky notes, Figma cards, or any visual collaboration tool. Group by a column (<code>tag</code>, <code>component</code>, <code>phase</code>). Include provenance on each card (<code>source_agent</code>, <code>score</code>). The workshop surface is the next stage, not a mirror — no two-way sync.
+      </p>
+
+      <h2>Generate report</h2>
+      <p>
+        Export filtered entries as a formatted document — a summary for stakeholders, a handoff brief for the next team, a decision log for compliance. The report is a snapshot, not a live view. Regenerate it when the logbook changes.
+      </p>
+
+      <h2>Trigger agent run</h2>
+      <p>
+        Use logbook state as input to a new agent session. A retro logbook with unresolved high-severity entries triggers a skill improvement agent. A backlog logbook with unestimated entries triggers an estimation agent. The logbook is the work queue; the agent processes entries and patches results back.
+      </p>
+
+      <h2>Visualize</h2>
+      <p>
+        Render a filtered slice — or the whole thing — as a chart, board, timeline, or heatmap. Group ideation entries by tag in a bubble chart. Show backlog candidates on a risk-vs-effort scatter plot. Render a retro logbook as a severity heatmap across runs. The visualization is a view on top of the logbook, not a copy — regenerate it when the data changes.
+      </p>
+
+      <hr />
+
+      <h2>Principles for actions</h2>
+
+      <h3>Each action is specific to one logbook</h3>
+      <p>
+        The ideation logbook has "apply to Miro." The backlog logbook has "commit to Jira." Do not build a universal action dispatcher — that's the unified-substrate anti-pattern applied to execution.
+      </p>
+
+      <h3>Always include a dry-run mode</h3>
+      <p>
+        Before creating 50 Jira tickets, print what would be created, with counts and warnings for missing fields. The cost of undoing a bad batch export is high.
+      </p>
+
+      <h3>Log what they did</h3>
+      <p>
+        Every commit, apply, or export writes a row to an action log: timestamp, action type, filter used, count of entries acted on, target URL or ID. This is how you answer "when did we last push to Jira and which entries were included?"
+      </p>
+
+      <h3>Avoid bidirectional sync</h3>
+      <p>
+        The logbook pushes to external systems; patch back identifiers (<code>ticket_id</code>, export URL) or action metadata only when later queries need them. Do not mirror ongoing target-system edits back into the logbook. If a Jira ticket gets updated after commit, that update lives in Jira — the logbook's job ended at commit. Maintaining two editable copies creates the "second place to update" anti-pattern.
+      </p>
+
+      <hr />
+
+      <h2>Governance</h2>
+
+      <h3>Ownership</h3>
+      <p>
+        Every logbook has exactly one owner: a person or role responsible for schema changes, conflict resolution, and sunset decisions. Contributors can append and patch rows; the owner decides when the schema evolves or the logbook closes. If no one owns it, no one will maintain it.
+      </p>
+
+      <h3>Access and visibility</h3>
+      <p>
+        Decide at creation who can write, who can read, and whether the logbook is visible outside the immediate team. For agent-written logbooks, this also means deciding which agents have append access and which have read-only query access. The default should be narrower than you think — widen it when someone asks.
+      </p>
+
+      <h3>Conflict resolution</h3>
+      <p>
+        Two contributors patching the same row at the same time is inevitable. For flat files, the rule is last-write-wins with git history as the audit trail. For spreadsheets, the rule is whatever the platform provides. For SQLite, use transactions. Pick an explicit rule and tell contributors what it is, rather than hoping conflicts don't happen.
+      </p>
+
+      <h3>Provenance</h3>
+      <p>
+        Decide at creation whether the logbook needs to track who wrote what and when. A short-lived ideation logbook might only need <code>source_agent</code>. A retro logbook spanning months needs timestamps. A compliance-sensitive logbook needs full <code>created_by</code>, <code>created_at</code>, <code>updated_by</code>, <code>updated_at</code>. Don't mandate provenance columns by default — add the ones the logbook's queries will actually use.
+      </p>
+
+      <h3>Retention and sunset</h3>
+      <p>
+        Every logbook should have an expected lifetime: one sprint, one quarter, indefinite. When the lifetime expires, the owner reviews it. The options are: <strong>archive</strong> (move to cold storage, stop querying), <strong>collapse</strong> (extract summary into a document, delete the logbook), or <strong>renew</strong> (confirm it's still active, extend the window). A logbook with no sunset rule will outlive its usefulness and become a maintenance ghost.
+      </p>
+
+      <div class="callout">
+        <div class="callout-title">The four operational roles</div>
+        <p>
+          Every working logbook needs four roles filled — by hand, by scripts, or by tooling: <strong>schema discipline</strong>, <strong>tool-based queries</strong>, <strong>execution actions</strong>, and <strong>orchestration</strong>. A CSV with a bash script and a manual Jira export fills all four. So does a purpose-built MCP server. What matters is that all four exist — so the logbook actually works instead of rotting as an unqueried file.
+        </p>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="storage-formats.html">
+        <span class="label">← Previous</span>
+        <span class="title">Storage formats</span>
+      </a>
+      <a class="next" href="examples.html">
+        <span class="label">Next</span>
+        <span class="title">Browse examples →</span>
+      </a>
+    </div>
+  </main>
+</div>
+
+</body>
+</html>
