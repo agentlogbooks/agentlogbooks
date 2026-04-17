@@ -52,8 +52,88 @@
       <span class="hero-eyebrow">Overview</span>
       <h1>A structured place for findings, drafts, and notes.</h1>
       <p class="lead">
-        Logbooks are shared working state: structured entries that agents and humans can append, patch, annotate, and query over time. An open concept, not a product — implement one in whatever storage your team already uses, via the <a href="https://github.com/agentlogbooks/logbook-creator" target="_blank" rel="noopener">logbook-creator</a> skill.
+        Logbooks are shared working state: structured entries that agents and humans can append, patch, annotate, query, visualise, validate, and assess over time. An open concept, not a product — bring your own storage.
       </p>
+      <figure class="hero-example">
+        <figcaption class="hero-example-label">What a logbook looks like</figcaption>
+        <div class="hero-carousel">
+          <input type="radio" name="hero-slide" id="hero-slide-1" class="hero-radio" checked>
+          <input type="radio" name="hero-slide" id="hero-slide-2" class="hero-radio">
+          <input type="radio" name="hero-slide" id="hero-slide-3" class="hero-radio">
+          <input type="radio" name="hero-slide" id="hero-slide-4" class="hero-radio">
+
+          <div class="hero-tabs" role="tablist">
+            <label for="hero-slide-1" class="hero-tab">Debugging</label>
+            <label for="hero-slide-2" class="hero-tab">Ideation</label>
+            <label for="hero-slide-3" class="hero-tab">Multi-angle review</label>
+            <label for="hero-slide-4" class="hero-tab">PR followups</label>
+          </div>
+
+          <div class="hero-slide" data-slide="1">
+            <div class="hero-table-wrap">
+              <table class="hero-table">
+                <thead>
+                  <tr><th>id</th><th>problem</th><th>approach</th><th>result</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="mono">a1</td><td class="mono">flaky test in CI</td><td>increased timeout</td><td class="mono">still flaky</td></tr>
+                  <tr><td class="mono">a2</td><td class="mono">flaky test in CI</td><td>mocked external API</td><td class="mono">flaky in CI</td></tr>
+                  <tr><td class="mono">a3</td><td class="mono">flaky test in CI</td><td>pinned dep versions</td><td class="mono">fixed</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hero-example-caption">Next session queries <code>result=failed</code> and skips what's already ruled out.</p>
+          </div>
+
+          <div class="hero-slide" data-slide="2">
+            <div class="hero-table-wrap">
+              <table class="hero-table">
+                <thead>
+                  <tr><th>id</th><th>idea</th><th>source</th><th>score</th><th>tag</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="mono">i1</td><td>rewrite auth from scratch</td><td class="mono">ideator</td><td class="mono">3.2</td><td class="mono">wild</td></tr>
+                  <tr><td class="mono">i2</td><td>merge i1 with existing flow</td><td class="mono">connector</td><td class="mono">4.7</td><td class="mono">safe</td></tr>
+                  <tr><td class="mono">i3</td><td>drop user accounts entirely</td><td class="mono">critic</td><td class="mono">4.1</td><td class="mono">wild</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hero-example-caption">Across 5 sessions: query <code>tag=wild AND score&gt;4</code> — which risky bets actually survive?</p>
+          </div>
+
+          <div class="hero-slide" data-slide="3">
+            <div class="hero-table-wrap">
+              <table class="hero-table">
+                <thead>
+                  <tr><th>id</th><th>angle</th><th>severity</th><th>finding</th><th>status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="mono">f1</td><td class="mono">security</td><td class="mono">high</td><td>JWT stored in localStorage</td><td class="mono">open</td></tr>
+                  <tr><td class="mono">f2</td><td class="mono">performance</td><td class="mono">low</td><td>localStorage is fastest option</td><td class="mono">open</td></tr>
+                  <tr><td class="mono">f3</td><td class="mono">security</td><td class="mono">medium</td><td>No rate limit on /login</td><td class="mono">reviewed</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hero-example-caption">f1 and f2 disagree. Prose hides contradictions; rows make them queryable.</p>
+          </div>
+
+          <div class="hero-slide" data-slide="4">
+            <div class="hero-table-wrap">
+              <table class="hero-table">
+                <thead>
+                  <tr><th>id</th><th>source</th><th>reviewer</th><th>promise</th><th>status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td class="mono">p1</td><td class="mono">pr-142</td><td class="mono">bob</td><td>extract auth into its own module</td><td class="mono">open</td></tr>
+                  <tr><td class="mono">p2</td><td class="mono">pr-138</td><td class="mono">carol</td><td>add integration test for edge case</td><td class="mono">fulfilled</td></tr>
+                  <tr><td class="mono">p3</td><td class="mono">pr-130</td><td class="mono">alice</td><td>remove feature flag once stable</td><td class="mono">abandoned</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hero-example-caption">Before opening a PR: query <code>status=open</code> — fulfill yesterday's promises.</p>
+          </div>
+        </div>
+      </figure>
       <div class="hero-actions">
         <a class="btn btn-primary" href="what-are-logbooks.html">Read the concept →</a>
         <a class="btn" href="examples.html">Browse examples</a>
@@ -102,6 +182,9 @@
       <h2>Flexible by design</h2>
       <p class="lede">
         A logbook can live in a CSV, spreadsheet, JSONL file, SQLite database, or a purpose-built tool. What matters is not the backend. What matters is that the work is structured enough to query, update, and carry forward.
+      </p>
+      <p class="lede" style="margin-top: 14px;">
+        To scaffold one in your project, use the <a href="https://github.com/agentlogbooks/logbook-creator" target="_blank" rel="noopener">logbook-creator</a> skill.
       </p>
     </section>
 
