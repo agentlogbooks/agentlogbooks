@@ -122,6 +122,12 @@ pre {
 }
 .nav-links a:hover { color: var(--text); text-decoration: none; }
 .nav-links a.active { color: var(--text); }
+.nav-links a.nav-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.nav-links a.nav-github svg { display: block; }
 
 /* Docs layout: sidebar + content */
 .docs {
@@ -191,7 +197,7 @@ pre {
 
 /* Hero (for overview/landing) */
 .hero {
-  padding: 72px 0 28px;
+  padding: 16px 0 28px;
   max-width: 760px;
 }
 .hero-eyebrow {
@@ -219,7 +225,7 @@ pre {
   margin: 0 0 24px;
   line-height: 1.55;
 }
-.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 
 /* Buttons */
 .btn {
