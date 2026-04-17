@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Overview — Agent Logbooks</title>
-<meta name="description" content="A simple, structured way to make agent work build instead of restart." />
+<meta name="description" content="A structured place for findings, drafts, and notes." />
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -50,9 +50,9 @@
   <main class="docs-content">
     <div class="hero">
       <span class="hero-eyebrow">Overview</span>
-      <h1>A simple, structured way to make agent work build instead of restart.</h1>
+      <h1>A structured place for findings, drafts, and notes.</h1>
       <p class="lead">
-        Logbooks are shared working state: structured entries that agents and humans can append, patch, annotate, and query over time. They keep unfinished work usable across sessions, tools, and contributors.
+        Logbooks are shared working state: structured entries that agents and humans can append, patch, annotate, and query over time. An open concept, not a product — implement one in whatever storage your team already uses, via the <a href="https://github.com/agentlogbooks/logbook-creator" target="_blank" rel="noopener">logbook-creator</a> skill.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="what-are-logbooks.html">Read the concept →</a>
@@ -63,10 +63,7 @@
     <section class="docs-section">
       <h2>Why logbooks?</h2>
       <p class="lede">
-        Agents can produce a lot of valuable intermediate work: findings, candidate tasks, review notes, risk flags, and partial plans. Without a structured place for that work to live, every new pass starts over, chat history gets overloaded, and promising work disappears between runs. Logbooks solve this by giving evolving work a durable, queryable home between documents and trackers.
-      </p>
-      <p class="lede">
-        <strong>For agent builders:</strong> make multi-phase workflows more reliable. <strong>For teams:</strong> keep draft work queryable before it becomes a ticket or a report. <strong>For reviewers:</strong> see progress without reading the whole transcript.
+        Agents produce partial work — findings, draft tasks, review notes, risk flags — one piece at a time. A logbook is the surface where those pieces accumulate as structured rows, so they stay scannable, filterable, and usable as work grows. Agents and humans add to the same logbook, whether the next reader is another step in this run, a reviewer, another agent, or a later session.
       </p>
     </section>
 
