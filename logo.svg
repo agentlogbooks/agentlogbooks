@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none slice" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="14"/>
+  <rect y="16" width="64" height="14"/>
+  <rect y="32" width="64" height="14"/>
+  <rect x=".5" y="48.5" width="63" height="15" rx="1" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="2.4 1.4" opacity=".425"/>
+  <path d="M6 50l4 0l0 1l-1 0l0 10l1 0l0 1l-4 0l0 -1l1 0l0 -10l-1 0l0 -1z"/>
+</svg>

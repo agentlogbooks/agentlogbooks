@@ -107,6 +107,7 @@ pre {
   font-size: 12px;
   font-weight: 700;
 }
+.brand-mark svg { display: block; }
 .nav-links {
   display: flex;
   align-items: center;
