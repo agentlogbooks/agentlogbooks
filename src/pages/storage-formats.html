@@ -57,6 +57,14 @@
         Most human-readable, worst to append programmatically, painful to query. Only use when the logbook is tiny (under 20 rows), hand-maintained, and read more often than written. Rarely the right call for agent-written logbooks.
       </p>
 
+      <h3>What real skills picked, and why</h3>
+      <ul>
+        <li><a href="/skills/deep-code-review.html"><code>deep-code-review</code></a> → <strong>SQLite + JSONL</strong>. Relational rows for hotspots and findings; JSONL trace for the action log.</li>
+        <li><a href="/skills/mutation-testing.html"><code>mutation-testing</code></a> → <strong>SQLite + JSONL</strong>. Same reasoning: typed tables for state, JSONL for the run trace.</li>
+        <li><a href="/skills/ideation.html"><code>ideation</code></a> → <strong>SQLite</strong>. Per-topic, multi-table, lineage edges between ideas — joins are the value.</li>
+        <li><code>what-i-already-tried</code> (external) → <strong>CSV</strong>. Flat, human-editable, one file per problem. The whole point is greppability.</li>
+      </ul>
+
       <hr />
 
       <h2>Designing a stable entry contract</h2>
