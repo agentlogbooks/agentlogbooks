@@ -69,17 +69,17 @@
     <div class="skill-header">
       <span class="eyebrow eyebrow-external">Skill example · external (skill-creator)</span>
       <h1>skill-creator eval workspace</h1>
-      <p class="tagline">Multi-table workspace for evaluating and iterating on skills.</p>
+      <p class="tagline">JSON-file workspace for evaluating and iterating on skills.</p>
       <div class="skill-pills">
-        <span class="pill-install">git clone github.com/anthropics/skill-creator</span>
-        <a class="pill-github" href="https://github.com/anthropics/skill-creator" target="_blank" rel="noopener">GitHub →</a>
+        <span class="pill-install">git clone github.com/anthropics/skills</span>
+        <a class="pill-github" href="https://github.com/anthropics/skills/tree/main/skills/skill-creator" target="_blank" rel="noopener">GitHub →</a>
       </div>
     </div>
 
     <div class="prose-body">
       <h2>What it does</h2>
       <p>
-        Each skill iteration produces eval results that you want to compare across versions — but a flat transcript can't answer "did iteration 8 actually get better than iteration 7?" The skill-creator eval workspace is the surface where versioned eval definitions, per-iteration results, and human feedback all join on stable IDs (<code>eval_id</code>, <code>run_id</code>, <code>iteration_id</code>). With those joins in place, regression queries, pass-rate trends, and reviewer notes become rows you can group, filter, and diff — instead of transcripts you have to re-read.
+        Each skill iteration produces eval results that you want to compare across versions — but a flat transcript can't answer "did iteration 8 actually get better than iteration 7?" The skill-creator eval workspace is a directory of structured JSON files: eval definitions live in <code>evals/evals.json</code>, each run produces its own subdirectory with <code>grading.json</code> + <code>metrics.json</code> + <code>timing.json</code>, and the workspace root carries <code>history.json</code> tracking version-over-version pass rates. With each artifact's shape stable, regression queries and pass-rate trends become diffs you can read instead of transcripts you have to re-trace.
       </p>
 
       <h2>How it does it</h2>
@@ -87,101 +87,139 @@
         <div class="phase">
           <div class="phase-num">01</div>
           <div class="phase-body">
-            <h4>Define an eval</h4>
-            <p>Capture an eval as a versioned row: prompt, expected shape, success criteria. Each eval has a stable <code>eval_id</code> so it can be referenced across iterations.</p>
+            <h4>Define evals</h4>
+            <p>Capture each test case in <code>evals/evals.json</code> — id, prompt, expected output, fixture files, and a list of expectations. Reusable across every skill version that gets tested.</p>
           </div>
-          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>INSERT INTO evals (eval_id, name, prompt, expected_shape)</div>
+          <div class="phase-artifact"><span class="phase-artifact-label">evals/evals.json</span>{
+  "skill_name": "pdf",
+  "evals": [{
+    "id": 1,
+    "prompt": "Extract names from form.pdf",
+    "files": ["evals/files/form.pdf"],
+    "expectations": [
+      "Output includes 'John Smith'",
+      "Used the pdf-extract script"
+    ]
+  }]
+}</div>
         </div>
 
         <div class="phase">
           <div class="phase-num">02</div>
           <div class="phase-body">
-            <h4>Iterate on the skill</h4>
-            <p>Each skill version under test gets an iteration row, capturing what changed. The <code>iteration_id</code> is the join key that ties runs and feedback back to a specific revision.</p>
+            <h4>Run an iteration</h4>
+            <p>Each skill version under test (<code>v0</code>, <code>v1</code>, <code>v2</code>) is an iteration. The executor agent runs every eval against this version and writes a per-run subdirectory.</p>
           </div>
-          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>INSERT INTO iterations (iteration_id, skill_version,
-  started_at, notes)</div>
+          <div class="phase-artifact"><span class="phase-artifact-label">workspace layout</span>workspace/
+├── history.json
+└── runs/
+    └── v2/
+        └── eval-1/
+            ├── grading.json
+            ├── outputs/metrics.json
+            └── timing.json</div>
         </div>
 
         <div class="phase">
           <div class="phase-num">03</div>
           <div class="phase-body">
-            <h4>Run evals against the iteration</h4>
-            <p>For each (eval × iteration), capture the run result with output, pass/fail, latency, and tokens. One row per pair — that's the grain that makes cross-iteration comparison work.</p>
+            <h4>Capture run metrics</h4>
+            <p>The executor writes <code>metrics.json</code> (tool calls, files created, errors) and <code>timing.json</code> (durations, tokens) — the mechanical record of what happened.</p>
           </div>
-          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>INSERT INTO runs (run_id, eval_id, iteration_id,
-  output, pass, latency_ms, tokens)</div>
+          <div class="phase-artifact"><span class="phase-artifact-label">outputs/metrics.json</span>{
+  "tool_calls": {"Read": 5, "Bash": 8},
+  "total_steps": 6,
+  "files_created": ["filled_form.pdf"],
+  "errors_encountered": 0
+}</div>
         </div>
 
         <div class="phase">
           <div class="phase-num">04</div>
           <div class="phase-body">
-            <h4>Aggregate per iteration</h4>
-            <p>Group runs by iteration to compute pass rate, p50 latency, mean tokens. The aggregates are derived — they live in queries, not in a separate table you have to keep in sync.</p>
+            <h4>Grade the run</h4>
+            <p>The grader agent reads the run and writes <code>grading.json</code> — checks each expectation against the transcript, records evidence, computes a pass rate.</p>
           </div>
-          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>SELECT iteration_id,
-  COUNT(pass)/COUNT(*) AS pass_rate
-FROM runs
-GROUP BY iteration_id</div>
+          <div class="phase-artifact"><span class="phase-artifact-label">grading.json</span>{
+  "expectations": [{
+    "text": "Output includes 'John Smith'",
+    "passed": true,
+    "evidence": "Found in Step 3"
+  }],
+  "summary": {"passed": 2, "failed": 1, "pass_rate": 0.67}
+}</div>
         </div>
 
         <div class="phase">
           <div class="phase-num">05</div>
           <div class="phase-body">
-            <h4>Capture human feedback</h4>
-            <p>Reviewers attach notes to specific runs or iterations with severity. Feedback is its own table so it can be added asynchronously without rewriting run rows.</p>
+            <h4>Update history</h4>
+            <p>After all evals run, the iteration's aggregate pass rate is appended to <code>history.json</code> at workspace root. That single file is the cross-iteration timeline.</p>
           </div>
-          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>INSERT INTO feedback (feedback_id,
-  run_id OR iteration_id,
-  reviewer, severity, note)</div>
+          <div class="phase-artifact"><span class="phase-artifact-label">history.json</span>{
+  "skill_name": "pdf",
+  "current_best": "v2",
+  "iterations": [
+    {"version": "v0", "expectation_pass_rate": 0.65},
+    {"version": "v1", "expectation_pass_rate": 0.71},
+    {"version": "v2", "expectation_pass_rate": 0.84,
+     "is_current_best": true}
+  ]
+}</div>
         </div>
 
         <div class="phase">
           <div class="phase-num">06</div>
           <div class="phase-body">
-            <h4>Pick winning iteration + ship</h4>
-            <p>Query the data to pick the best iteration; ship the corresponding skill version. The decision is a query, not a vibe.</p>
+            <h4>Pick the winning iteration</h4>
+            <p>Read <code>history.json</code> to see which version is <code>current_best</code>; ship that skill version. The decision is a JSON read, not a vibe.</p>
           </div>
-          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>SELECT * FROM iterations
-WHERE iteration_id = (
-  SELECT iteration_id FROM runs
-  GROUP BY iteration_id
-  ORDER BY pass_rate DESC LIMIT 1
-)</div>
+          <div class="phase-artifact"><span class="phase-artifact-label">jq</span>jq '.current_best' history.json
+# "v2"</div>
         </div>
       </div>
 
       <h2>Schema overview</h2>
       <table class="schema-table">
         <thead>
-          <tr><th>Table</th><th>Purpose</th></tr>
+          <tr><th>File</th><th>Where</th><th>Purpose</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><code>evals</code></td>
-            <td>Eval definitions; versioned; stable <code>eval_id</code></td>
+            <td><code>evals.json</code></td>
+            <td><code>evals/</code></td>
+            <td>Reusable eval definitions: prompt, expected output, expectations</td>
           </tr>
           <tr>
-            <td><code>runs</code></td>
-            <td>One row per (eval × iteration); <code>run_id</code>, <code>pass</code>, <code>latency_ms</code>, <code>tokens</code>, <code>output</code></td>
+            <td><code>history.json</code></td>
+            <td>workspace root</td>
+            <td>Iteration timeline: version → pass rate, with <code>current_best</code> pointer</td>
           </tr>
           <tr>
-            <td><code>iterations</code></td>
-            <td>One row per skill version under test; <code>iteration_id</code>, <code>skill_version</code>, <code>notes</code></td>
+            <td><code>grading.json</code></td>
+            <td><code>&lt;run-dir&gt;/</code></td>
+            <td>Per-expectation pass/fail with evidence; computed by the grader agent</td>
           </tr>
           <tr>
-            <td><code>feedback</code></td>
-            <td>Human notes on runs or iterations; <code>severity</code>, <code>note</code>, <code>reviewer</code></td>
+            <td><code>metrics.json</code></td>
+            <td><code>&lt;run-dir&gt;/outputs/</code></td>
+            <td>Mechanical run record: tool calls, steps, files created, errors</td>
+          </tr>
+          <tr>
+            <td><code>timing.json</code></td>
+            <td><code>&lt;run-dir&gt;/</code></td>
+            <td>Wall-clock timing and token counts per run</td>
           </tr>
         </tbody>
       </table>
       <div class="callout">
-        <p>Joins are the value. Without the workspace, "did this iteration get better?" is a transcript-reading task.</p>
+        <p>Stable shapes are the value. Without them, "did this iteration get better?" is a transcript-reading task; with them, it's a <code>jq</code> query against <code>history.json</code>.</p>
       </div>
 
       <h2>Go deeper</h2>
       <ul>
-        <li><a href="https://github.com/anthropics/skill-creator" target="_blank" rel="noopener">skill-creator on GitHub →</a></li>
+        <li><a href="https://github.com/anthropics/skills/tree/main/skills/skill-creator" target="_blank" rel="noopener">skill-creator on GitHub →</a></li>
+        <li><a href="https://github.com/anthropics/skills/blob/main/skills/skill-creator/references/schemas.md" target="_blank" rel="noopener">Canonical JSON schemas →</a></li>
       </ul>
     </div>
   </main>
