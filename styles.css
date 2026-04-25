@@ -843,7 +843,6 @@ body[class*="page-skill-"] .nav-links a.nav-skills {
 }
 .sidebar-nav-meta a .meta-marker {
   display: inline-block;
-  width: 0.85em;
   color: #b9a458;
   font-size: 0.85em;
   margin-right: 4px;
