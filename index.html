@@ -69,12 +69,21 @@
       <h1>The Agent Logbook</h1>
       <p class="lead">Structured state for agent skills.</p>
       <div class="hero-actions">
-        <a class="btn" href="/what-are-logbooks.html">Read the concept →</a>
-        <a class="btn" href="/skills/deep-code-review.html">Browse skill examples</a>
-        <a class="btn" href="https://github.com/agentlogbooks/logbooks" target="_blank" rel="noopener">View on GitHub →</a>
+        <a class="btn btn-primary" href="/what-are-logbooks.html">Read the concept →</a>
       </div>
+    </div>
+
+    <section class="docs-section">
+      <h2>Why logbooks?</h2>
+      <p class="lede">
+        Agents produce partial work — findings, draft tasks, review notes, risk flags — one piece at a time. Without structure, those pieces dissolve into transcripts: contradictions stay hidden, ideas get lost between sessions, gaps stop being trackable. So what does it look like when that work is structured enough to query and carry forward?
+      </p>
+    </section>
+
+    <section class="docs-section">
+      <h2>What structure looks like</h2>
+      <p class="lede">Three patterns where rows do what prose can't.</p>
       <figure class="hero-example">
-        <figcaption class="hero-example-label">Why structure matters</figcaption>
         <div class="hero-carousel">
           <input type="radio" name="hero-slide" id="hero-slide-1" class="hero-radio" checked>
           <input type="radio" name="hero-slide" id="hero-slide-2" class="hero-radio">
@@ -99,11 +108,7 @@
                 </tbody>
               </table>
             </div>
-            <p class="hero-example-caption">f1 and f2 disagree. Prose hides contradictions; rows make them queryable.</p>
-            <div class="hero-actions" style="margin-top: 14px;">
-              <a class="btn" href="/what-are-logbooks.html">Learn more →</a>
-              <a class="btn btn-primary" href="/skills/deep-code-review.html">Use it →</a>
-            </div>
+            <p class="hero-example-caption">f1 and f2 disagree. Prose would hide that contradiction — rows make it queryable, and queryable across sessions.</p>
           </div>
 
           <div class="hero-slide" data-slide="2">
@@ -119,11 +124,7 @@
                 </tbody>
               </table>
             </div>
-            <p class="hero-example-caption">Across 5 sessions: query <code>tag=wild AND score&gt;4</code> — which risky bets actually survive?</p>
-            <div class="hero-actions" style="margin-top: 14px;">
-              <a class="btn" href="/what-are-logbooks.html">Learn more →</a>
-              <a class="btn btn-primary" href="/skills/ideation.html">Use it →</a>
-            </div>
+            <p class="hero-example-caption">Five sessions of ideas reduce to one query: <code>tag=wild AND score&gt;4</code> — which risky bets actually survive?</p>
           </div>
 
           <div class="hero-slide" data-slide="3">
@@ -139,26 +140,15 @@
                 </tbody>
               </table>
             </div>
-            <p class="hero-example-caption">Open gaps survive across runs as patchable present-tense state.</p>
-            <div class="hero-actions" style="margin-top: 14px;">
-              <a class="btn" href="/what-are-logbooks.html">Learn more →</a>
-              <a class="btn btn-primary" href="/skills/mutation-testing.html">Use it →</a>
-            </div>
+            <p class="hero-example-caption">Open gaps survive across runs as patchable, present-tense state — not buried in last week's transcript.</p>
           </div>
 
         </div>
       </figure>
-    </div>
-
-    <section class="docs-section">
-      <h2>Why logbooks?</h2>
-      <p class="lede">
-        Agents produce partial work — findings, draft tasks, review notes, risk flags — one piece at a time. A logbook is the surface where those pieces accumulate as structured rows, so they stay scannable, filterable, and usable as work grows. Agents and humans add to the same logbook, whether the next reader is another step in this run, a reviewer, another agent, or a later session.
-      </p>
     </section>
 
     <section class="docs-section">
-      <h2>What can logbooks enable?</h2>
+      <h2>What this enables</h2>
       <div class="criteria-grid">
         <div class="criteria-card">
           <div class="criteria-num">01</div>
