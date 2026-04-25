@@ -1,13 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/logo.svg" />
-<link rel="icon" type="image/png" sizes="128x128" href="/logo-128.png" />
-<link rel="apple-touch-icon" href="/logo-128.png" />
-<link rel="stylesheet" href="/styles.css" />
-
+<!-- include: partials/head.html -->
 <title>Actions — Agent Logbooks</title>
 <meta name="description" content="A logbook that only gets queried is a reference. A logbook that drives execution is a coordination surface." />
 <meta property="og:title" content="Actions" />
@@ -19,49 +13,10 @@
 </head>
 <body class="page-actions">
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="/">
-      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" width="14" height="14" fill="currentColor"><rect width="64" height="14"/><rect y="16" width="64" height="14"/><rect y="32" width="64" height="14"/><rect x=".5" y="48.5" width="63" height="15" rx="1" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2.4 1.4" opacity=".425"/><path d="M6 50l4 0l0 1l-1 0l0 10l1 0l0 1l-4 0l0 -1l1 0l0 -10l-1 0l0 -1z"/></svg></span>
-      <span>agentlogbooks</span>
-    </a>
-    <button class="nav-mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-    <ul class="nav-links">
-      <li><a class="nav-concept" href="/what-are-logbooks.html">Concept</a></li>
-      <li><a class="nav-skills" href="/skills/deep-code-review.html">Skill examples</a></li>
-      <li><a class="nav-github" href="https://github.com/agentlogbooks/logbooks" target="_blank" rel="noopener" aria-label="logbooks on GitHub"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>logbooks</a></li>
-    </ul>
-  </div>
-</nav>
-
+<!-- include: partials/nav.html -->
 
 <div class="docs">
-<aside class="sidebar">
-  <div class="sidebar-group">
-    <div class="sidebar-title">Concept</div>
-    <ul class="sidebar-nav">
-      <li><a href="/">Overview</a></li>
-      <li><a href="/what-are-logbooks.html">What are logbooks?</a></li>
-      <li><a href="/when-to-use.html">When to use a logbook</a></li>
-      <li><a href="/storage-formats.html">Storage formats</a></li>
-      <li><a href="/actions.html">Actions</a></li>
-    </ul>
-  </div>
-  <div class="sidebar-group">
-    <div class="sidebar-title">Skill examples</div>
-    <ul class="sidebar-nav">
-      <li><a href="/skills/deep-code-review.html">deep-code-review</a></li>
-      <li><a href="/skills/ideation.html">ideation</a></li>
-      <li><a href="/skills/mutation-testing.html">mutation-testing</a></li>
-      <li><a href="/skills/skill-creator-eval-workspace.html">skill-creator eval workspace</a></li>
-    </ul>
-    <div class="sidebar-divider"></div>
-    <ul class="sidebar-nav sidebar-nav-meta">
-      <li><a href="/skills/logbook-creator.html"><span class="meta-marker" aria-hidden="true">◆</span> logbook-creator</a></li>
-    </ul>
-  </div>
-</aside>
-
+<!-- include: partials/sidebar.html -->
 
   <main class="docs-content">
     <div class="breadcrumb"><a href="/">docs</a><span class="sep">/</span>actions</div>
@@ -179,16 +134,4 @@
   </main>
 </div>
 
-<script>
-(function(){
-  var btn = document.querySelector('.nav-mobile-toggle');
-  if (!btn) return;
-  btn.addEventListener('click', function(){
-    var open = document.body.classList.toggle('nav-open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-})();
-</script>
-</body>
-</html>
-
+<!-- include: partials/foot.html -->
