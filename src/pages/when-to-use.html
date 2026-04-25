@@ -76,10 +76,10 @@
             <td>Structured state as the working surface for long, multi-step work.</td>
             <td><a href="/skills/deep-code-review.html">deep-code-review</a>, eval workspaces</td>
           </tr>
-          <tr id="background-agent-supervision">
+          <tr>
             <td>Background-agent supervision</td>
             <td>Long-running work where state, not chat, is the shared surface.</td>
-            <td>Background-agent progress visualisation</td>
+            <td><a href="#background-agent-supervision">Progress visualisation ↓</a></td>
           </tr>
           <tr>
             <td>Cross-session tracking</td>
@@ -101,9 +101,26 @@
         When you reach for a workflow labeled <em>deep</em> — deep research, deep planning, deep review — check whether the underlying pattern (multi-phase, structured intermediates, cross-session reuse, queryable state) is present. When it is, the four criteria above are usually satisfied and a logbook is probably the right layer. When the workflow is single-pass or single-reader despite the label, it isn't.
       </p>
 
-      <h3>The background-agent heuristic</h3>
+      <h3 id="background-agent-supervision">The background-agent heuristic</h3>
       <p>
         Agents running in the background — long-running, asynchronous, or multi-instance — produce state that a supervisor wants to check without interrupting the work or reading the full transcript. "What's the agent doing right now? Which runs are stuck? What did it finish overnight?" are logbook queries.
+      </p>
+      <p>A minimal shape — one row per meaningful step:</p>
+      <div class="hero-table-wrap" style="margin: 12px 0;">
+        <table class="hero-table">
+          <thead>
+            <tr><th>phase</th><th>step</th><th>status</th><th>next_intent</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">implement</td><td>add validation</td><td class="mono">done</td><td>run tests</td></tr>
+            <tr><td class="mono">test</td><td>run pytest</td><td class="mono">running</td><td></td></tr>
+            <tr><td class="mono">test</td><td>fix import error</td><td class="mono">blocked</td><td>ask user about path</td></tr>
+            <tr><td class="mono">implement</td><td>refactor handler</td><td class="mono">todo</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--text-soft);">
+        Supervisor queries <code>status=blocked</code> to know where to intervene without reading the full transcript. The schema is yours to shape — phase/step/status is just a starting skeleton.
       </p>
 
       <h3>The hidden-logbook signal</h3>
