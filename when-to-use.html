@@ -103,6 +103,42 @@
         If fewer than three are true, you probably don't need a logbook. Write a document, use chat state, or pass a single-use artifact.
       </p>
 
+      <h2>Common categories of work that pass the test</h2>
+      <p>If your work fits one of these patterns, the four-part test is usually satisfied.</p>
+
+      <table class="schema-table" style="font-family: var(--sans);">
+        <thead>
+          <tr><th>Category</th><th>What it is</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Draft / staging workflows</td>
+            <td>Agent proposes; human or another agent reviews before commit.</td>
+            <td>Backlog shaping, retro feedback, tickets-before-Jira</td>
+          </tr>
+          <tr>
+            <td>Deep / multi-phase work</td>
+            <td>Structured state as the working surface for long, multi-step work.</td>
+            <td><a href="/skills/deep-code-review.html">deep-code-review</a>, eval workspaces</td>
+          </tr>
+          <tr id="background-agent-supervision">
+            <td>Background-agent supervision</td>
+            <td>Long-running work where state, not chat, is the shared surface.</td>
+            <td>Background-agent progress visualisation</td>
+          </tr>
+          <tr>
+            <td>Cross-session tracking</td>
+            <td>Debug attempts, design history, what's been ruled out.</td>
+            <td><code>what-i-already-tried</code> (external)</td>
+          </tr>
+          <tr>
+            <td>Multi-agent coordination</td>
+            <td>Several agents (or runs) read+write the same state.</td>
+            <td><a href="/skills/ideation.html">ideation</a> operator runs</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h2>Heuristics that usually satisfy the test</h2>
 
       <h3>The "deep" heuristic</h3>
