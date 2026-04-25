@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- include: partials/head.html -->
+<title>mutation-testing — Agent Logbooks</title>
+<meta name="description" content="Validates test quality beyond coverage. Surviving mutants are real bugs the suite would miss." />
+<meta property="og:title" content="mutation-testing" />
+<meta property="og:description" content="Validates test quality beyond coverage. Surviving mutants are real bugs the suite would miss." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://agentlogbooks.com/skills/mutation-testing.html" />
+<meta property="og:image" content="https://agentlogbooks.com/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+</head>
+<body class="page-skill-mutation-testing">
+
+<!-- include: partials/nav.html -->
+
+<div class="docs">
+<!-- include: partials/sidebar.html -->
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="/">docs</a><span class="sep">/</span>skills<span class="sep">/</span>mutation-testing</div>
+
+    <div class="skill-header">
+      <span class="eyebrow">Skill example · logbooks marketplace</span>
+      <h1>mutation-testing</h1>
+      <p class="tagline">Tests pass ≠ tests are useful. Find gaps your test suite would miss.</p>
+      <div class="skill-pills">
+        <span class="pill-install">/plugin install mutation-testing@logbooks</span>
+        <span class="pill-invoke">/mutation-testing</span>
+        <a class="pill-github" href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/mutation-testing" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="prose-body">
+      <h2>What it does</h2>
+      <p>
+        mutation-testing validates whether a test suite is actually exercising its code, not just executing it. One subagent per source file generates intelligent mutations — conditional flips, boolean negation, arithmetic swaps, return value changes, boundary shifts — and runs them through the project's native test runner (pytest, jest, vitest, mocha, or go test). Every mutant is classified as Killed, Survived, Error, or Skipped, and a mutation score is computed across the run. When the score falls below 70%, the skill warns and exits with code 2 so CI can catch it. Every run persists to a per-project SQLite ledger and JSONL trace under <code>./.logbooks/mutation-testing/</code>, and a human-facing <code>mutation-todos.md</code> is written at the repo root with rationale for each surviving mutant.
+      </p>
+
+      <h2>How it does it</h2>
+      <div class="phase-timeline">
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div class="phase-body">
+            <h4>Discover sources + detect runner</h4>
+            <p>Scans the repo for source files (or honors explicit globs), identifies the test runner from config files, runs the baseline suite to confirm tests pass before mutating.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL</span>{ type: "run", run_id, runner: "pytest",
+  source_globs, started_at }</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">02</div>
+          <div class="phase-body">
+            <h4>Read open gaps from <code>gap_ledger</code></h4>
+            <p>Queries the gap_ledger for currently-open gaps in this project so subagents can avoid re-discovering them.</p>
+            <div class="phase-callout">Read-from-state: gap_ledger informs mutation generation so subagents create novel mutants instead of re-discovering known gaps.</div>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>SELECT mutant_key, summary
+FROM gap_ledger
+WHERE status = 'open' AND project = ?</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div class="phase-body">
+            <h4>Generate mutations (one subagent per file)</h4>
+            <p>Dispatches one subagent per source file to generate intelligent mutations (conditional flips, boolean negation, arithmetic swaps, return value changes, boundary shifts). Each subagent receives the known-gaps hint.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL hint passed in</span>known_gaps_for_file: [...]</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">04</div>
+          <div class="phase-body">
+            <h4>Apply → run → restore loop</h4>
+            <p>For each mutation: apply to disk, invoke the test runner, restore the file. Records every result.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQLite mutant_results row</span>mutant_key,
+status ∈ {Killed, Survived, Error, Skipped},
+runner_output</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">05</div>
+          <div class="phase-body">
+            <h4>Classify + compute mutation score</h4>
+            <p>Bands: ≥90% strong, 70–90% acceptable (review survivors), &lt;70% weak. Score excludes Skipped.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Formula</span>score = Killed / (Killed + Survived + Errors) × 100</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">06</div>
+          <div class="phase-body">
+            <h4>Patch <code>gap_ledger</code> + write <code>mutation-todos.md</code></h4>
+            <p>Closes gaps for newly-killed mutants; opens gaps for new survivors; reopens previously-fixed mutants that re-survived. Writes the human-facing todo file at repo root.</p>
+            <div class="phase-callout">Patch-the-state: closing a gap (test added, code fixed) is a first-class operation — not just an absence in the next run.</div>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Patch</span>gap_ledger.status: open → fixed when killed;
+insert open for new survivors;
+reopen previously-fixed survivors</div>
+        </div>
+      </div>
+
+      <h2>Schema overview</h2>
+      <table class="schema-table">
+        <thead>
+          <tr><th>Layer</th><th>Table</th><th>Mutability</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>History</td><td><code>runs</code></td><td>append-only</td><td>One row per execution</td></tr>
+          <tr><td>Outcomes</td><td><code>mutant_results</code></td><td>append-only</td><td>Every mutant result per run</td></tr>
+          <tr><td>Identity</td><td><code>mutants</code></td><td>append + counter updates</td><td>Canonical mutant (<code>mutant_key</code> from sha256)</td></tr>
+          <tr><td>State</td><td><code>gap_ledger</code></td><td><strong>patchable</strong></td><td>Current open / fixed / acknowledged / wont_fix gaps</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <p>The gap_ledger is a patchable present-tense view of which gaps are still open, independent of run history. (<code>mutation-runs.logbook.md:64</code>)</p>
+      </div>
+
+      <h2>Go deeper</h2>
+      <ul>
+        <li><a href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/mutation-testing" target="_blank" rel="noopener">Plugin README →</a></li>
+        <li><a href="https://github.com/agentlogbooks/logbooks/blob/main/plugins/mutation-testing/skills/mutation-testing/mutation-runs.logbook.md" target="_blank" rel="noopener">Logbook spec →</a></li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<!-- include: partials/foot.html -->
