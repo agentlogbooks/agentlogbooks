@@ -48,6 +48,21 @@
         <li><strong>Act:</strong> selected entries drive next steps such as review, reporting, tracker commits, or new agent runs.</li>
       </ol>
 
+      <div class="callout">
+        <div class="callout-title">Stable entry contract — in the wild</div>
+        <p>See <a href="/skills/deep-code-review.html"><code>deep-code-review</code></a>'s <code>candidate_findings</code> table — every row has the same columns regardless of which lens (correctness, security, performance, …) produced it.</p>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">Tool-queried, not reread — in the wild</div>
+        <p>See <a href="/skills/ideation.html"><code>ideation</code></a>'s CLI: <code>python scripts/ideation_db.py query top-by-composite</code> answers "which ideas survived stress-testing" without reading every operator run.</p>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">Outlives the session — in the wild</div>
+        <p>See <a href="/skills/mutation-testing.html"><code>mutation-testing</code></a>'s <code>gap_ledger</code> — open gaps survive across runs as patchable present-tense state. A test added today closes a gap reported last week.</p>
+      </div>
+
       <h2>Why they matter</h2>
       <p>
         Without a logbook, intermediate work tends to disappear into chat history, scattered docs, or half-finished tickets. With a logbook, work can carry forward: one pass leaves behind structured results, and the next pass builds on them. That makes logbooks especially useful for deep workflows, draft or staging workflows, and background agent work.
