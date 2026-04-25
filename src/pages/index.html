@@ -22,9 +22,12 @@
     <div class="hero">
       <span class="hero-eyebrow">Overview</span>
       <h1>The Agent Logbook</h1>
-      <p class="lead">
-        Structured state for agent skills.
-      </p>
+      <p class="lead">Structured state for agent skills.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/what-are-logbooks.html">Read the concept →</a>
+        <a class="btn" href="/skills/deep-code-review.html">Browse skill examples</a>
+        <a class="btn" href="https://github.com/agentlogbooks/logbooks" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
       <figure class="hero-example">
         <figcaption class="hero-example-label">Why structure matters</figcaption>
         <div class="hero-carousel">
@@ -34,26 +37,30 @@
           <input type="radio" name="hero-slide" id="hero-slide-4" class="hero-radio">
 
           <div class="hero-tabs" role="tablist">
-            <label for="hero-slide-1" class="hero-tab">Debugging</label>
+            <label for="hero-slide-1" class="hero-tab">Multi-angle review</label>
             <label for="hero-slide-2" class="hero-tab">Ideation</label>
-            <label for="hero-slide-3" class="hero-tab">Multi-angle review</label>
-            <label for="hero-slide-4" class="hero-tab">PR followups</label>
+            <label for="hero-slide-3" class="hero-tab">Test-gap tracking</label>
+            <label for="hero-slide-4" class="hero-tab">Background-agent progress</label>
           </div>
 
           <div class="hero-slide" data-slide="1">
             <div class="hero-table-wrap">
               <table class="hero-table">
                 <thead>
-                  <tr><th>id</th><th>problem</th><th>approach</th><th>result</th></tr>
+                  <tr><th>id</th><th>angle</th><th>severity</th><th>finding</th><th>status</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td class="mono">a1</td><td class="mono">flaky test in CI</td><td>increased timeout</td><td class="mono">still flaky</td></tr>
-                  <tr><td class="mono">a2</td><td class="mono">flaky test in CI</td><td>mocked external API</td><td class="mono">flaky in CI</td></tr>
-                  <tr><td class="mono">a3</td><td class="mono">flaky test in CI</td><td>pinned dep versions</td><td class="mono">fixed</td></tr>
+                  <tr><td class="mono">f1</td><td class="mono">security</td><td class="mono">high</td><td>JWT stored in localStorage</td><td class="mono">open</td></tr>
+                  <tr><td class="mono">f2</td><td class="mono">performance</td><td class="mono">low</td><td>localStorage is fastest option</td><td class="mono">open</td></tr>
+                  <tr><td class="mono">f3</td><td class="mono">security</td><td class="mono">medium</td><td>No rate limit on /login</td><td class="mono">reviewed</td></tr>
                 </tbody>
               </table>
             </div>
-            <p class="hero-example-caption">Next session queries <code>result=failed</code> and skips what's already ruled out.</p>
+            <p class="hero-example-caption">f1 and f2 disagree. Prose hides contradictions; rows make them queryable.</p>
+            <div class="hero-actions" style="margin-top: 14px;">
+              <a class="btn" href="/what-are-logbooks.html">Learn more →</a>
+              <a class="btn btn-primary" href="/skills/deep-code-review.html">Use it →</a>
+            </div>
           </div>
 
           <div class="hero-slide" data-slide="2">
@@ -70,130 +77,110 @@
               </table>
             </div>
             <p class="hero-example-caption">Across 5 sessions: query <code>tag=wild AND score&gt;4</code> — which risky bets actually survive?</p>
+            <div class="hero-actions" style="margin-top: 14px;">
+              <a class="btn" href="/what-are-logbooks.html">Learn more →</a>
+              <a class="btn btn-primary" href="/skills/ideation.html">Use it →</a>
+            </div>
           </div>
 
           <div class="hero-slide" data-slide="3">
             <div class="hero-table-wrap">
               <table class="hero-table">
                 <thead>
-                  <tr><th>id</th><th>angle</th><th>severity</th><th>finding</th><th>status</th></tr>
+                  <tr><th>mutant_id</th><th>file</th><th>line</th><th>status</th><th>severity</th><th>last_seen</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td class="mono">f1</td><td class="mono">security</td><td class="mono">high</td><td>JWT stored in localStorage</td><td class="mono">open</td></tr>
-                  <tr><td class="mono">f2</td><td class="mono">performance</td><td class="mono">low</td><td>localStorage is fastest option</td><td class="mono">open</td></tr>
-                  <tr><td class="mono">f3</td><td class="mono">security</td><td class="mono">medium</td><td>No rate limit on /login</td><td class="mono">reviewed</td></tr>
+                  <tr><td class="mono">m-3</td><td class="mono">api/handlers.py</td><td class="mono">142</td><td class="mono">open</td><td class="mono">high</td><td class="mono">2026-04-19</td></tr>
+                  <tr><td class="mono">m-7</td><td class="mono">api/auth.py</td><td class="mono">55</td><td class="mono">fixed</td><td class="mono">medium</td><td class="mono">2026-04-22</td></tr>
+                  <tr><td class="mono">m-12</td><td class="mono">lib/parse.py</td><td class="mono">198</td><td class="mono">open</td><td class="mono">high</td><td class="mono">2026-04-19</td></tr>
                 </tbody>
               </table>
             </div>
-            <p class="hero-example-caption">f1 and f2 disagree. Prose hides contradictions; rows make them queryable.</p>
+            <p class="hero-example-caption">Open gaps survive across runs as patchable present-tense state.</p>
+            <div class="hero-actions" style="margin-top: 14px;">
+              <a class="btn" href="/what-are-logbooks.html">Learn more →</a>
+              <a class="btn btn-primary" href="/skills/mutation-testing.html">Use it →</a>
+            </div>
           </div>
 
           <div class="hero-slide" data-slide="4">
             <div class="hero-table-wrap">
               <table class="hero-table">
                 <thead>
-                  <tr><th>id</th><th>source</th><th>reviewer</th><th>promise</th><th>status</th></tr>
+                  <tr><th>phase</th><th>step</th><th>status</th><th>next_intent</th></tr>
                 </thead>
                 <tbody>
-                  <tr><td class="mono">p1</td><td class="mono">pr-142</td><td class="mono">bob</td><td>extract auth into its own module</td><td class="mono">open</td></tr>
-                  <tr><td class="mono">p2</td><td class="mono">pr-138</td><td class="mono">carol</td><td>add integration test for edge case</td><td class="mono">fulfilled</td></tr>
-                  <tr><td class="mono">p3</td><td class="mono">pr-130</td><td class="mono">alice</td><td>remove feature flag once stable</td><td class="mono">abandoned</td></tr>
+                  <tr><td class="mono">implement</td><td>add validation</td><td class="mono">done</td><td>run tests</td></tr>
+                  <tr><td class="mono">test</td><td>run pytest</td><td class="mono">running</td><td></td></tr>
+                  <tr><td class="mono">test</td><td>fix import error</td><td class="mono">blocked</td><td>ask user about path</td></tr>
+                  <tr><td class="mono">implement</td><td>refactor handler</td><td class="mono">todo</td><td></td></tr>
                 </tbody>
               </table>
             </div>
-            <p class="hero-example-caption">Before opening a PR: query <code>status=open</code> — fulfill yesterday's promises.</p>
+            <p class="hero-example-caption">Supervisor queries <code>status=blocked</code> to know where to intervene without reading the full transcript.</p>
+            <div class="hero-actions" style="margin-top: 14px;">
+              <a class="btn" href="/when-to-use.html#background-agent-supervision">Learn more →</a>
+              <a class="btn" href="/when-to-use.html#background-agent-supervision">Use it →</a>
+            </div>
           </div>
         </div>
       </figure>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="what-are-logbooks.html">Read the concept →</a>
-        <a class="btn" href="examples.html">Browse examples</a>
-        <a class="btn" href="https://github.com/agentlogbooks/logbooks" target="_blank" rel="noopener">View on GitHub →</a>
-      </div>
     </div>
 
     <section class="docs-section">
-      <h2>Why logbooks?</h2>
-      <p class="lede">
-        Agents produce partial work — findings, draft tasks, review notes, risk flags — one piece at a time. A logbook is the surface where those pieces accumulate as structured rows, so they stay scannable, filterable, and usable as work grows. Agents and humans add to the same logbook, whether the next reader is another step in this run, a reviewer, another agent, or a later session.
-      </p>
-    </section>
+      <h2>Skill examples</h2>
+      <p class="lede">Five published skills that exercise logbook principles.</p>
+      <pre class="code-dark"><code>$ /plugin marketplace add agentlogbooks/logbooks</code></pre>
 
-    <section class="docs-section">
-      <h2>What can logbooks enable?</h2>
-      <div class="criteria-grid">
-        <div class="criteria-card">
-          <div class="criteria-num">01</div>
-          <h4>Deep research and review</h4>
-          <p>Build multi-phase work from structured intermediate results.</p>
+      <div class="skill-card-grid">
+        <a class="skill-card" href="/skills/deep-code-review.html">
+          <span class="skill-name">deep-code-review</span>
+          <p class="skill-tagline">Hotspot-first code review. ≤5 high-signal findings per run.</p>
+          <code class="skill-install">/plugin install deep-code-review@logbooks</code>
+        </a>
+        <a class="skill-card" href="/skills/ideation.html">
+          <span class="skill-name">ideation</span>
+          <p class="skill-tagline">Per-topic SQLite logbook. Operators + playbooks across sessions.</p>
+          <code class="skill-install">/plugin install ideation@logbooks</code>
+        </a>
+        <a class="skill-card" href="/skills/mutation-testing.html">
+          <span class="skill-name">mutation-testing</span>
+          <p class="skill-tagline">Surviving mutants are real bugs your suite would miss.</p>
+          <code class="skill-install">/plugin install mutation-testing@logbooks</code>
+        </a>
+        <a class="skill-card skill-card-external" href="/skills/skill-creator-eval-workspace.html">
+          <span class="skill-name">skill-creator eval workspace</span>
+          <p class="skill-tagline">Multi-table workspace for evaluating skills across iterations. (external)</p>
+          <code class="skill-install">git clone anthropics/skill-creator</code>
+        </a>
+      </div>
+
+      <div class="divider-or"><span>Or build your own</span></div>
+
+      <div class="meta-card">
+        <div>
+          <h3>Make your own logbook</h3>
+          <p>The meta-skill: walk through motivation, scope, schema, and storage. Get back two artifacts — the logbook instance and its sibling spec.</p>
         </div>
-        <div class="criteria-card">
-          <div class="criteria-num">02</div>
-          <h4>Draft and staging workflows</h4>
-          <p>Shape work before committing it to Jira, docs, or reports.</p>
-        </div>
-        <div class="criteria-card">
-          <div class="criteria-num">03</div>
-          <h4>Background agent supervision</h4>
-          <p>Inspect progress without reading full transcripts.</p>
-        </div>
-        <div class="criteria-card">
-          <div class="criteria-num">04</div>
-          <h4>Cross-agent reuse</h4>
-          <p>Let each pass leave behind work the next pass can use.</p>
-        </div>
-        <div class="criteria-card">
-          <div class="criteria-num">05</div>
-          <h4>Controlled execution</h4>
-          <p>Turn selected entries into tickets, reports, boards, or new agent runs.</p>
+        <div class="meta-cta-col">
+          <code class="skill-install">/plugin install logbook-creator@logbooks</code>
+          <a class="btn btn-primary" href="/skills/logbook-creator.html">Design my own →</a>
         </div>
       </div>
     </section>
 
     <section class="docs-section">
-      <h2>Flexible by design</h2>
-      <p class="lede">
-        A logbook can live in a CSV, spreadsheet, JSONL file, SQLite database, or a purpose-built tool. What matters is not the backend. What matters is that the work is structured enough to query, update, and carry forward.
-      </p>
-    </section>
-
-    <section class="docs-section">
-      <h2>Get started</h2>
-      <div class="card-grid" style="margin-top: 12px;">
-        <a class="card" href="what-are-logbooks.html">
-          <div class="card-icon">?</div>
-          <h3>What are logbooks?</h3>
-          <p>Learn what logbooks are, how they work, and where they fit between docs, trackers, and logs.</p>
-          <div class="card-meta"><span class="tag tag-accent">concept</span></div>
+      <div class="card-grid">
+        <a class="card" href="/what-are-logbooks.html">
+          <h3>New here?</h3>
+          <p>Read about the structured-state pattern.</p>
         </a>
-        <a class="card" href="when-to-use.html">
-          <div class="card-icon">⚖</div>
-          <h3>When should I use one?</h3>
-          <p>Use a simple test to tell whether you need a logbook or just a doc, chat state, or a tracker.</p>
-          <div class="card-meta"><span class="tag tag-accent">decision</span></div>
-        </a>
-        <a class="card" href="examples.html">
-          <div class="card-icon">✦</div>
-          <h3>Examples</h3>
-          <p>See logbooks for deep research, backlog shaping, eval workspaces, and background agent monitoring.</p>
-          <div class="card-meta"><span class="tag tag-accent">gallery</span></div>
-        </a>
-        <a class="card" href="storage-formats.html">
-          <div class="card-icon">◱</div>
-          <h3>Storage and actions</h3>
-          <p>Pick a backend, define a stable entry contract, and connect the logbook to reports, trackers, or downstream agent runs.</p>
-          <div class="card-meta"><span class="tag tag-accent">practice</span></div>
+        <a class="card" href="/when-to-use.html">
+          <h3>Not sure if a logbook fits?</h3>
+          <p>Walk through the four-part test.</p>
         </a>
       </div>
     </section>
-
-    <div class="page-nav">
-      <span></span>
-      <a class="next" href="what-are-logbooks.html">
-        <span class="label">Next</span>
-        <span class="title">What are logbooks? →</span>
-      </a>
-    </div>
   </main>
 </div>
 
