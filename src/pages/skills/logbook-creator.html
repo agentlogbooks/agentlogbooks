@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- include: partials/head.html -->
+<title>logbook-creator — Agent Logbooks</title>
+<meta name="description" content="Design and create a logbook — a shared, queryable, schema-stable working surface." />
+<meta property="og:title" content="logbook-creator" />
+<meta property="og:description" content="Design and create a logbook — a shared, queryable, schema-stable working surface." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://agentlogbooks.com/skills/logbook-creator.html" />
+<meta property="og:image" content="https://agentlogbooks.com/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+</head>
+<body class="page-skill-logbook-creator">
+
+<!-- include: partials/nav.html -->
+
+<div class="docs">
+<!-- include: partials/sidebar.html -->
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="/">docs</a><span class="sep">/</span>skills<span class="sep">/</span>logbook-creator</div>
+
+    <div class="skill-header">
+      <span class="eyebrow eyebrow-meta">Meta-skill · build your own</span>
+      <h1>logbook-creator</h1>
+      <p class="tagline">Design and create a logbook — the meta-skill that produces other logbooks.</p>
+      <div class="skill-pills">
+        <span class="pill-install">/plugin install logbook-creator@logbooks</span>
+        <span class="pill-invoke pill-invoke-meta">/logbook-creator</span>
+        <a class="pill-github" href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/logbook-creator" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="prose-body">
+      <h2>When to apply it</h2>
+      <p>Reach for <code>/logbook-creator</code> when one of these five patterns describes the situation. Each one is a separate motivation; many real cases blend two.</p>
+      <div class="criteria-grid">
+        <div class="criteria-card">
+          <div class="criteria-num">01</div>
+          <h4>Tracking across sessions</h4>
+          <p>Debug attempts, design history, what's been ruled out — survives memory loss between sessions.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">02</div>
+          <h4>Drafting before commit</h4>
+          <p>Agent proposes; human or another agent reviews before pushing to Jira / docs / report.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">03</div>
+          <h4>Human-in-the-loop review</h4>
+          <p>Agent generates a structured set of items; reviewer needs to skim, filter, and act.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">04</div>
+          <h4>Multi-agent coordination</h4>
+          <p>Several agents (or runs) read+write the same state; one source of truth, not chat-based handoff.</p>
+        </div>
+        <div class="criteria-card">
+          <div class="criteria-num">05</div>
+          <h4>Collection for later analysis</h4>
+          <p>Capture a noisy stream now; queryable structure for later.</p>
+        </div>
+      </div>
+
+      <h2>How to apply it</h2>
+      <div class="phase-timeline">
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div class="phase-body">
+            <h4>Motivation</h4>
+            <p>Identify the pattern that justifies this logbook (one of the five above).</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Spec section</span>Why does this logbook need to exist?
+What problem does it solve?</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">02</div>
+          <div class="phase-body">
+            <h4>Scope &amp; lifecycle</h4>
+            <p>Decide where it lives, how partitioned, when entries are appended/queried, expected lifetime, sunset rule.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Spec section</span>Address (path), partitioning,
+append+query moments,
+expected lifetime, sunset rule</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div class="phase-body">
+            <h4>Schema (entity-first)</h4>
+            <p>Identify record types &rarr; derive per-type fields &rarr; set identity rule &rarr; set partial-row convention.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Spec section</span>Record types &rarr; per-type fields
+&rarr; identity rule
+&rarr; partial-row convention</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">04</div>
+          <div class="phase-body">
+            <h4>Storage + projections</h4>
+            <p>Pick the authoritative store (CSV/JSONL/SQLite/spreadsheet) + optional projections (run-trace / export-only / mirror).</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Spec section</span>Authoritative store
++ optional projections
+(run-trace / export-only / mirror)</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">05</div>
+          <div class="phase-body">
+            <h4>Create the two artifacts</h4>
+            <p>Write the logbook instance + sibling spec.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Files</span>&lt;name&gt;.{csv,jsonl,sqlite}
++ &lt;name&gt;.logbook.md</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <p>Each step writes to the spec, not to a database. The two artifacts that get materialized at step 5 are the logbook instance and its sibling spec — the spec is what makes the logbook reviewable, queryable, and inheritable across sessions.</p>
+      </div>
+
+      <h2>Sample output</h2>
+      <p>The two artifacts side by side: a logbook instance (rows you append to) and the sibling spec that defines its schema, identity, and query patterns.</p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0 28px;">
+        <div>
+          <div class="phase-artifact-label" style="color: var(--text-muted); margin-bottom: 8px;">retro-observations.csv</div>
+          <pre class="code-dark"><code>id,run_id,observed_at,severity,observation,supersedes,resolution_id,owner
+1,r-12,2026-04-20,med,"agent re-tries same approach",,,@dy
+2,r-12,2026-04-20,low,"too many sub-questions",,,@dy
+3,r-13,2026-04-21,high,"agent ignores feedback when long",1,,@dy
+</code></pre>
+        </div>
+        <div>
+          <div class="phase-artifact-label" style="color: var(--text-muted); margin-bottom: 8px;">retro-observations.logbook.md</div>
+          <pre><code># retro-observations.logbook.md
+
+## Schema
+| col | type | semantics |
+|---|---|---|
+| id | int | sequential, immutable |
+| severity | enum | low / med / high |
+| supersedes | int? | id of corrected row |
+| resolution_id | int? | FK to resolution.csv |
+
+## Identity rule
+Sequential id, never reused.
+
+## Correction rule
+Append a new row referencing the original
+via supersedes; never edit in place.
+
+## Query patterns
+- `severity = high AND resolution_id IS NULL`
+- group by `pattern_tag` across runs
+</code></pre>
+        </div>
+      </div>
+
+      <h2>Go deeper</h2>
+      <ul>
+        <li><a href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/logbook-creator" target="_blank" rel="noopener">Plugin README →</a></li>
+        <li><a href="https://github.com/agentlogbooks/logbooks/blob/main/plugins/logbook-creator/skills/logbook-creator/SKILL.md" target="_blank" rel="noopener">Skill spec →</a></li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<!-- include: partials/foot.html -->
+</body>
+</html>
+</content>
+</invoke>
