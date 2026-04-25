@@ -1,0 +1,7 @@
+{
+  "name": "agentlogbooks-site",
+  "private": true,
+  "scripts": {
+    "build": "node build.js"
+  }
+}
