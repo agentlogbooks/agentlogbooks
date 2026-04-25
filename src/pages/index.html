@@ -34,13 +34,11 @@
           <input type="radio" name="hero-slide" id="hero-slide-1" class="hero-radio" checked>
           <input type="radio" name="hero-slide" id="hero-slide-2" class="hero-radio">
           <input type="radio" name="hero-slide" id="hero-slide-3" class="hero-radio">
-          <input type="radio" name="hero-slide" id="hero-slide-4" class="hero-radio">
 
           <div class="hero-tabs" role="tablist">
             <label for="hero-slide-1" class="hero-tab">Multi-angle review</label>
             <label for="hero-slide-2" class="hero-tab">Ideation</label>
             <label for="hero-slide-3" class="hero-tab">Test-gap tracking</label>
-            <label for="hero-slide-4" class="hero-tab">Background-agent progress</label>
           </div>
 
           <div class="hero-slide" data-slide="1">
@@ -103,26 +101,6 @@
             </div>
           </div>
 
-          <div class="hero-slide" data-slide="4">
-            <div class="hero-table-wrap">
-              <table class="hero-table">
-                <thead>
-                  <tr><th>phase</th><th>step</th><th>status</th><th>next_intent</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td class="mono">implement</td><td>add validation</td><td class="mono">done</td><td>run tests</td></tr>
-                  <tr><td class="mono">test</td><td>run pytest</td><td class="mono">running</td><td></td></tr>
-                  <tr><td class="mono">test</td><td>fix import error</td><td class="mono">blocked</td><td>ask user about path</td></tr>
-                  <tr><td class="mono">implement</td><td>refactor handler</td><td class="mono">todo</td><td></td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="hero-example-caption">Supervisor queries <code>status=blocked</code> to know where to intervene without reading the full transcript.</p>
-            <div class="hero-actions" style="margin-top: 14px;">
-              <a class="btn" href="/when-to-use.html#background-agent-supervision">Learn more →</a>
-              <a class="btn" href="/when-to-use.html#background-agent-supervision">Use it →</a>
-            </div>
-          </div>
         </div>
       </figure>
     </div>
