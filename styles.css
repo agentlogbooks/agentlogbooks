@@ -129,6 +129,7 @@ pre {
   gap: 6px;
 }
 .nav-links a.nav-github svg { display: block; }
+.nav-mobile-toggle { display: none; }
 
 /* Docs layout: sidebar + content */
 .docs {
@@ -756,7 +757,7 @@ pre {
 .page-nav .next { text-align: right; }
 
 /* Responsive */
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .docs {
     grid-template-columns: 1fr;
   }
@@ -773,4 +774,295 @@ pre {
   .hero { padding: 44px 0 20px; }
   .page-nav { grid-template-columns: 1fr; }
   .page-nav .next { text-align: left; }
+  .nav-mobile-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text);
+    border-radius: var(--radius-sm);
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .nav-links { display: none; }
+  body.nav-open .nav-links {
+    display: flex;
+    position: absolute;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    flex-direction: column;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    gap: 14px;
+  }
+  .sidebar { display: none; }
+  body.nav-open .sidebar { display: block; }
 }
+
+/* === Active-state highlights, driven by body class === */
+
+/* Sidebar — Concept group */
+body.page-overview .sidebar-nav a[href="/"],
+body.page-what-are-logbooks .sidebar-nav a[href="/what-are-logbooks.html"],
+body.page-when-to-use .sidebar-nav a[href="/when-to-use.html"],
+body.page-storage-formats .sidebar-nav a[href="/storage-formats.html"],
+body.page-actions .sidebar-nav a[href="/actions.html"] {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* Sidebar — Skill examples group */
+body.page-skill-deep-code-review .sidebar-nav a[href="/skills/deep-code-review.html"],
+body.page-skill-ideation .sidebar-nav a[href="/skills/ideation.html"],
+body.page-skill-mutation-testing .sidebar-nav a[href="/skills/mutation-testing.html"],
+body.page-skill-eval-workspace .sidebar-nav a[href="/skills/skill-creator-eval-workspace.html"],
+body.page-skill-logbook-creator .sidebar-nav a[href="/skills/logbook-creator.html"] {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* Top nav — Concept link is active for any concept page */
+body[class*="page-overview"] .nav-links a.nav-concept,
+body[class*="page-what-are-logbooks"] .nav-links a.nav-concept,
+body[class*="page-when-to-use"] .nav-links a.nav-concept,
+body[class*="page-storage-formats"] .nav-links a.nav-concept,
+body[class*="page-actions"] .nav-links a.nav-concept,
+body[class*="page-skill-"] .nav-links a.nav-skills {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* === Sidebar meta-skill (logbook-creator) treatment === */
+.sidebar-divider {
+  height: 1px;
+  border-top: 1px dashed var(--border-strong);
+  margin: 8px 12px;
+}
+.sidebar-nav-meta a .meta-marker {
+  display: inline-block;
+  width: 0.85em;
+  color: #b9a458;
+  font-size: 0.85em;
+  margin-right: 4px;
+}
+
+/* === Dark code style — used for install snippets and timeline artifact boxes === */
+pre.code-dark, .code-dark {
+  background: #1a1a1a;
+  color: #e8efee;
+  border: 1px solid #1a1a1a;
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  overflow-x: auto;
+  line-height: 1.5;
+  font-size: 13px;
+  font-family: var(--mono);
+}
+.code-dark code { background: transparent; border: none; padding: 0; color: inherit; }
+
+/* === Skill-page header pills === */
+.skill-header { padding: 16px 0 28px; max-width: 760px; }
+.skill-header .eyebrow {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 5px 10px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+.skill-header .eyebrow.eyebrow-external,
+.skill-header .eyebrow.eyebrow-meta {
+  color: #6e5828;
+  background: #f3ede0;
+}
+.skill-header h1 {
+  font-family: var(--mono);
+  font-size: clamp(28px, 3.4vw, 36px);
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+.skill-header .tagline {
+  font-size: 17px;
+  color: var(--text-muted);
+  margin: 0 0 18px;
+}
+.skill-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.pill-install {
+  display: inline-flex;
+  align-items: center;
+  background: #1a1a1a;
+  color: #e8efee;
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+}
+.pill-invoke {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border: 1px solid var(--accent);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+}
+.pill-invoke.pill-invoke-meta {
+  background: #f3ede0;
+  color: #6e5828;
+  border-color: #b9a458;
+}
+.pill-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* === Phase timeline (linear pipeline / meta template) === */
+.phase-timeline { margin: 24px 0 36px; max-width: 880px; }
+.phase {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) minmax(0, 1.2fr);
+  column-gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  align-items: start;
+}
+.phase:first-child { border-top: none; }
+.phase-num {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  padding-top: 2px;
+}
+.phase-body h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+}
+.phase-body p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.phase-artifact {
+  background: #1a1a1a;
+  color: #e8efee;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+}
+.phase-artifact-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #88a89e;
+  margin-bottom: 6px;
+}
+.phase-callout {
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .phase { grid-template-columns: 28px minmax(0, 1fr); }
+  .phase-artifact { grid-column: 2 / -1; margin-top: 10px; }
+}
+
+/* === Ideation operator grid === */
+.op-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 20px 0 28px;
+}
+.op-family {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.op-family h4 {
+  font-family: var(--mono);
+  font-size: 13px;
+  margin: 0 0 6px;
+  color: var(--accent);
+}
+.op-family ul { margin: 0; padding-left: 16px; font-size: 13px; color: var(--text-muted); }
+.op-family li { margin: 0 0 2px; font-family: var(--mono); }
+
+/* === Meta card (homepage logbook-creator block) === */
+.meta-card {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 28px;
+  align-items: center;
+  background: linear-gradient(135deg, #f3ede0 0%, #e8efee 100%);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin: 32px 0;
+}
+.meta-card h3 { margin: 0 0 8px; font-size: 20px; }
+.meta-card p { margin: 0 0 12px; color: var(--text-muted); font-size: 14.5px; }
+.meta-card .meta-cta-col { display: flex; flex-direction: column; gap: 10px; align-items: stretch; }
+
+@media (max-width: 720px) {
+  .meta-card { grid-template-columns: 1fr; padding: 22px; }
+}
+
+/* === Skill cards on homepage (4-up grid + dashed-divider before meta) === */
+.skill-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+.skill-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.18s ease;
+}
+.skill-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.skill-card.skill-card-external { background: #fbf6ea; border-color: #d8c990; }
+.skill-card .skill-name { font-family: var(--mono); font-size: 14px; font-weight: 600; }
+.skill-card .skill-tagline { font-size: 13px; color: var(--text-muted); margin: 0; flex: 1; }
+.skill-card .skill-install { background: #1a1a1a; color: #e8efee; font-family: var(--mono); font-size: 12px; padding: 6px 10px; border-radius: var(--radius-sm); }
+
+.divider-or {
+  display: flex; align-items: center; gap: 12px; margin: 32px 0 20px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-soft);
+}
+.divider-or::before, .divider-or::after { content: ''; flex: 1; border-top: 1px dashed var(--border-strong); }
