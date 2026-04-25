@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<link rel="icon" type="image/png" sizes="128x128" href="/logo-128.png" />
+<link rel="apple-touch-icon" href="/logo-128.png" />
+<link rel="stylesheet" href="/styles.css" />
+
+<title>deep-code-review — Agent Logbooks</title>
+<meta name="description" content="Hotspot-first deep code review. Surfaces at most 5 high-signal findings or questions per run." />
+<meta property="og:title" content="deep-code-review" />
+<meta property="og:description" content="Hotspot-first deep code review. Surfaces at most 5 high-signal findings or questions per run." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://agentlogbooks.com/skills/deep-code-review.html" />
+<meta property="og:image" content="https://agentlogbooks.com/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+</head>
+<body class="page-skill-deep-code-review">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" width="14" height="14" fill="currentColor"><rect width="64" height="14"/><rect y="16" width="64" height="14"/><rect y="32" width="64" height="14"/><rect x=".5" y="48.5" width="63" height="15" rx="1" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2.4 1.4" opacity=".425"/><path d="M6 50l4 0l0 1l-1 0l0 10l1 0l0 1l-4 0l0 -1l1 0l0 -10l-1 0l0 -1z"/></svg></span>
+      <span>agentlogbooks</span>
+    </a>
+    <button class="nav-mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a class="nav-concept" href="/what-are-logbooks.html">Concept</a></li>
+      <li><a class="nav-skills" href="/skills/deep-code-review.html">Skill examples</a></li>
+      <li><a class="nav-github" href="https://github.com/agentlogbooks/logbooks" target="_blank" rel="noopener" aria-label="logbooks on GitHub"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>logbooks</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="docs">
+<aside class="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-title">Concept</div>
+    <ul class="sidebar-nav">
+      <li><a href="/">Overview</a></li>
+      <li><a href="/what-are-logbooks.html">What are logbooks?</a></li>
+      <li><a href="/when-to-use.html">When to use a logbook</a></li>
+      <li><a href="/storage-formats.html">Storage formats</a></li>
+      <li><a href="/actions.html">Actions</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-title">Skill examples</div>
+    <ul class="sidebar-nav">
+      <li><a href="/skills/deep-code-review.html">deep-code-review</a></li>
+      <li><a href="/skills/ideation.html">ideation</a></li>
+      <li><a href="/skills/mutation-testing.html">mutation-testing</a></li>
+      <li><a href="/skills/skill-creator-eval-workspace.html">skill-creator eval workspace</a></li>
+    </ul>
+    <div class="sidebar-divider"></div>
+    <ul class="sidebar-nav sidebar-nav-meta">
+      <li><a href="/skills/logbook-creator.html"><span class="meta-marker" aria-hidden="true">◆</span> logbook-creator</a></li>
+    </ul>
+  </div>
+</aside>
+
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="/">docs</a><span class="sep">/</span>skills<span class="sep">/</span>deep-code-review</div>
+
+    <div class="skill-header">
+      <span class="eyebrow">Skill example · logbooks marketplace</span>
+      <h1>deep-code-review</h1>
+      <p class="tagline">Hotspot-first deep code review for PRs, branches, and diffs.</p>
+      <div class="skill-pills">
+        <span class="pill-install">/plugin install deep-code-review@logbooks</span>
+        <span class="pill-invoke">/deep-code-review</span>
+        <a class="pill-github" href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/deep-code-review" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="prose-body">
+      <h2>What it does</h2>
+      <p>
+        deep-code-review is optimized to be right about a few important things rather than produce many comments. A run models behavior changes from the diff, picks risky hotspots, fans out per-hotspot lens subagents, runs a skeptic pass, and surfaces at most 5 outputs as findings or questions. Each run is persisted to a per-PR SQLite ledger and a per-run JSONL trace under <code>./.logbooks/code-review/</code> in the reviewed repo, so follow-up reviews can see what was already flagged. Formatting-only changes, trivial renames, and speculative style comments are ignored by default.
+      </p>
+
+      <h2>How it does it</h2>
+      <div class="phase-timeline">
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div class="phase-body">
+            <h4>Gather inputs</h4>
+            <p>Resolve the review target (PR, branch, pasted diff, or current WIP) into a stable PR_REF, then initialize the SQLite ledger and JSONL trace under <code>./.logbooks/code-review/</code>.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL trace</span>{ type: "run", run_id, pr_ref, target_repo, started_at }</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">02</div>
+          <div class="phase-body">
+            <h4>Build change map + select hotspots</h4>
+            <p>Read the diff once, classify edits into archetypes (guard-removed, public-contract-changed, persistence-schema-changed…), then pick up to 8 risky changed units worth focused review.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQLite hotspots row</span>hotspot_id, file_path, symbol, lines,
+change_archetypes, risk_tags, why_selected</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div class="phase-body">
+            <h4>Pick lenses per hotspot</h4>
+            <p>Choose review lenses for each hotspot from a fixed catalog (correctness, security, concurrency, performance, api-contract, …). Correctness and maintainability are always-on.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL trace</span>{ type: "hotspot", hotspot_id,
+  lenses: ["correctness", "security", ...] }</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">04</div>
+          <div class="phase-body">
+            <h4>Generate candidate findings (parallel fan-out)</h4>
+            <p>One subagent per (hotspot × lens) combination acquires minimal local context, then emits findings or questions with evidence, severity, and a local confidence score.</p>
+            <div class="phase-callout">Parallel fan-out: one subagent per (hotspot × lens) combination.</div>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQLite candidate_findings rows</span>candidate_id, hotspot_id, lens, output_type,
+summary, evidence, severity, confidence_local</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">05</div>
+          <div class="phase-body">
+            <h4>Skeptic + dedup + priority score</h4>
+            <p>A skeptic pass challenges each candidate, root-cause fingerprints collapse duplicates within the run, and a multi-factor priority score (0–100) ranks survivors.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Patch: candidate row updates</span>detection_state ∈ {selected, dropped,
+  duplicate-in-run},
+priority_score (0–100)</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">06</div>
+          <div class="phase-body">
+            <h4>Persist + report</h4>
+            <p>The top-ranked survivors (≤5) are surfaced as PR comments or a chat report; everything else stays in the ledger as suppressed judgment for future runs.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL trace + PR output</span>{ type: "output", surfacing_state: "posted" }
++ ≤5 PR comments emitted</div>
+        </div>
+      </div>
+
+      <h2>Schema overview</h2>
+      <table class="schema-table">
+        <thead>
+          <tr><th>Table / Stream</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>hotspots</code> (SQLite)</td>
+            <td>Planning — which units got reviewed, why selected, which lenses applied</td>
+          </tr>
+          <tr>
+            <td><code>candidate_findings</code> (SQLite)</td>
+            <td>Judgment — every candidate the model produced, with evidence + severity + state</td>
+          </tr>
+          <tr>
+            <td>JSONL trace</td>
+            <td>Action log — <code>run</code>, <code>hotspot</code>, <code>candidate</code>, <code>decision</code>, <code>output</code>, <code>pr_comment_dedup</code> records</td>
+          </tr>
+          <tr>
+            <td>(computed view)</td>
+            <td>Surfacing — only the ≤5 candidates with <code>surfacing_state = posted</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <p>Four concerns kept separate: <strong>trace, judgment, planning, presentation</strong>. (<code>findings.logbook.md:40-43</code>)</p>
+      </div>
+
+      <h2>Go deeper</h2>
+      <ul>
+        <li><a href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/deep-code-review" target="_blank" rel="noopener">Plugin README →</a></li>
+        <li><a href="https://github.com/agentlogbooks/logbooks/blob/main/plugins/deep-code-review/skills/deep-code-review/findings.logbook.md" target="_blank" rel="noopener">Logbook spec →</a></li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var btn = document.querySelector('.nav-mobile-toggle');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    var open = document.body.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>
+

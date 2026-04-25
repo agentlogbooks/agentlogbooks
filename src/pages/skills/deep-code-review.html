@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- include: partials/head.html -->
+<title>deep-code-review — Agent Logbooks</title>
+<meta name="description" content="Hotspot-first deep code review. Surfaces at most 5 high-signal findings or questions per run." />
+<meta property="og:title" content="deep-code-review" />
+<meta property="og:description" content="Hotspot-first deep code review. Surfaces at most 5 high-signal findings or questions per run." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://agentlogbooks.com/skills/deep-code-review.html" />
+<meta property="og:image" content="https://agentlogbooks.com/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+</head>
+<body class="page-skill-deep-code-review">
+
+<!-- include: partials/nav.html -->
+
+<div class="docs">
+<!-- include: partials/sidebar.html -->
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="/">docs</a><span class="sep">/</span>skills<span class="sep">/</span>deep-code-review</div>
+
+    <div class="skill-header">
+      <span class="eyebrow">Skill example · logbooks marketplace</span>
+      <h1>deep-code-review</h1>
+      <p class="tagline">Hotspot-first deep code review for PRs, branches, and diffs.</p>
+      <div class="skill-pills">
+        <span class="pill-install">/plugin install deep-code-review@logbooks</span>
+        <span class="pill-invoke">/deep-code-review</span>
+        <a class="pill-github" href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/deep-code-review" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="prose-body">
+      <h2>What it does</h2>
+      <p>
+        deep-code-review is optimized to be right about a few important things rather than produce many comments. A run models behavior changes from the diff, picks risky hotspots, fans out per-hotspot lens subagents, runs a skeptic pass, and surfaces at most 5 outputs as findings or questions. Each run is persisted to a per-PR SQLite ledger and a per-run JSONL trace under <code>./.logbooks/code-review/</code> in the reviewed repo, so follow-up reviews can see what was already flagged. Formatting-only changes, trivial renames, and speculative style comments are ignored by default.
+      </p>
+
+      <h2>How it does it</h2>
+      <div class="phase-timeline">
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div class="phase-body">
+            <h4>Gather inputs</h4>
+            <p>Resolve the review target (PR, branch, pasted diff, or current WIP) into a stable PR_REF, then initialize the SQLite ledger and JSONL trace under <code>./.logbooks/code-review/</code>.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL trace</span>{ type: "run", run_id, pr_ref, target_repo, started_at }</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">02</div>
+          <div class="phase-body">
+            <h4>Build change map + select hotspots</h4>
+            <p>Read the diff once, classify edits into archetypes (guard-removed, public-contract-changed, persistence-schema-changed…), then pick up to 8 risky changed units worth focused review.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQLite hotspots row</span>hotspot_id, file_path, symbol, lines,
+change_archetypes, risk_tags, why_selected</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div class="phase-body">
+            <h4>Pick lenses per hotspot</h4>
+            <p>Choose review lenses for each hotspot from a fixed catalog (correctness, security, concurrency, performance, api-contract, …). Correctness and maintainability are always-on.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL trace</span>{ type: "hotspot", hotspot_id,
+  lenses: ["correctness", "security", ...] }</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">04</div>
+          <div class="phase-body">
+            <h4>Generate candidate findings (parallel fan-out)</h4>
+            <p>One subagent per (hotspot × lens) combination acquires minimal local context, then emits findings or questions with evidence, severity, and a local confidence score.</p>
+            <div class="phase-callout">Parallel fan-out: one subagent per (hotspot × lens) combination.</div>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQLite candidate_findings rows</span>candidate_id, hotspot_id, lens, output_type,
+summary, evidence, severity, confidence_local</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">05</div>
+          <div class="phase-body">
+            <h4>Skeptic + dedup + priority score</h4>
+            <p>A skeptic pass challenges each candidate, root-cause fingerprints collapse duplicates within the run, and a multi-factor priority score (0–100) ranks survivors.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Patch: candidate row updates</span>detection_state ∈ {selected, dropped,
+  duplicate-in-run},
+priority_score (0–100)</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">06</div>
+          <div class="phase-body">
+            <h4>Persist + report</h4>
+            <p>The top-ranked survivors (≤5) are surfaced as PR comments or a chat report; everything else stays in the ledger as suppressed judgment for future runs.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL trace + PR output</span>{ type: "output", surfacing_state: "posted" }
++ ≤5 PR comments emitted</div>
+        </div>
+      </div>
+
+      <h2>Schema overview</h2>
+      <table class="schema-table">
+        <thead>
+          <tr><th>Table / Stream</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>hotspots</code> (SQLite)</td>
+            <td>Planning — which units got reviewed, why selected, which lenses applied</td>
+          </tr>
+          <tr>
+            <td><code>candidate_findings</code> (SQLite)</td>
+            <td>Judgment — every candidate the model produced, with evidence + severity + state</td>
+          </tr>
+          <tr>
+            <td>JSONL trace</td>
+            <td>Action log — <code>run</code>, <code>hotspot</code>, <code>candidate</code>, <code>decision</code>, <code>output</code>, <code>pr_comment_dedup</code> records</td>
+          </tr>
+          <tr>
+            <td>(computed view)</td>
+            <td>Surfacing — only the ≤5 candidates with <code>surfacing_state = posted</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <p>Four concerns kept separate: <strong>trace, judgment, planning, presentation</strong>. (<code>findings.logbook.md:40-43</code>)</p>
+      </div>
+
+      <h2>Go deeper</h2>
+      <ul>
+        <li><a href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/deep-code-review" target="_blank" rel="noopener">Plugin README →</a></li>
+        <li><a href="https://github.com/agentlogbooks/logbooks/blob/main/plugins/deep-code-review/skills/deep-code-review/findings.logbook.md" target="_blank" rel="noopener">Logbook spec →</a></li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<!-- include: partials/foot.html -->
