@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<link rel="icon" type="image/png" sizes="128x128" href="/logo-128.png" />
+<link rel="apple-touch-icon" href="/logo-128.png" />
+<link rel="stylesheet" href="/styles.css" />
+
+<title>mutation-testing — Agent Logbooks</title>
+<meta name="description" content="Validates test quality beyond coverage. Surviving mutants are real bugs the suite would miss." />
+<meta property="og:title" content="mutation-testing" />
+<meta property="og:description" content="Validates test quality beyond coverage. Surviving mutants are real bugs the suite would miss." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://agentlogbooks.com/skills/mutation-testing.html" />
+<meta property="og:image" content="https://agentlogbooks.com/logo-128.png" />
+<meta name="twitter:card" content="summary_large_image" />
+</head>
+<body class="page-skill-mutation-testing">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64" width="14" height="14" fill="currentColor"><rect width="64" height="14"/><rect y="16" width="64" height="14"/><rect y="32" width="64" height="14"/><rect x=".5" y="48.5" width="63" height="15" rx="1" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2.4 1.4" opacity=".425"/><path d="M6 50l4 0l0 1l-1 0l0 10l1 0l0 1l-4 0l0 -1l1 0l0 -10l-1 0l0 -1z"/></svg></span>
+      <span>agentlogbooks</span>
+    </a>
+    <button class="nav-mobile-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <ul class="nav-links">
+      <li><a class="nav-concept" href="/what-are-logbooks.html">Concept</a></li>
+      <li><a class="nav-skills" href="/skills/deep-code-review.html">Skill examples</a></li>
+      <li><a class="nav-github" href="https://github.com/agentlogbooks/logbooks" target="_blank" rel="noopener" aria-label="logbooks on GitHub"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>logbooks</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="docs">
+<aside class="sidebar">
+  <div class="sidebar-group">
+    <div class="sidebar-title">Concept</div>
+    <ul class="sidebar-nav">
+      <li><a href="/">Overview</a></li>
+      <li><a href="/what-are-logbooks.html">What are logbooks?</a></li>
+      <li><a href="/when-to-use.html">When to use a logbook</a></li>
+      <li><a href="/storage-formats.html">Storage formats</a></li>
+      <li><a href="/actions.html">Actions</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-group">
+    <div class="sidebar-title">Skill examples</div>
+    <ul class="sidebar-nav">
+      <li><a href="/skills/deep-code-review.html">deep-code-review</a></li>
+      <li><a href="/skills/ideation.html">ideation</a></li>
+      <li><a href="/skills/mutation-testing.html">mutation-testing</a></li>
+      <li><a href="/skills/skill-creator-eval-workspace.html">skill-creator eval workspace</a></li>
+    </ul>
+    <div class="sidebar-divider"></div>
+    <ul class="sidebar-nav sidebar-nav-meta">
+      <li><a href="/skills/logbook-creator.html"><span class="meta-marker" aria-hidden="true">◆</span> logbook-creator</a></li>
+    </ul>
+  </div>
+</aside>
+
+
+  <main class="docs-content">
+    <div class="breadcrumb"><a href="/">docs</a><span class="sep">/</span>skills<span class="sep">/</span>mutation-testing</div>
+
+    <div class="skill-header">
+      <span class="eyebrow">Skill example · logbooks marketplace</span>
+      <h1>mutation-testing</h1>
+      <p class="tagline">Tests pass ≠ tests are useful. Find gaps your test suite would miss.</p>
+      <div class="skill-pills">
+        <span class="pill-install">/plugin install mutation-testing@logbooks</span>
+        <span class="pill-invoke">/mutation-testing</span>
+        <a class="pill-github" href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/mutation-testing" target="_blank" rel="noopener">GitHub →</a>
+      </div>
+    </div>
+
+    <div class="prose-body">
+      <h2>What it does</h2>
+      <p>
+        mutation-testing validates whether a test suite is actually exercising its code, not just executing it. One subagent per source file generates intelligent mutations — conditional flips, boolean negation, arithmetic swaps, return value changes, boundary shifts — and runs them through the project's native test runner (pytest, jest, vitest, mocha, or go test). Every mutant is classified as Killed, Survived, Error, or Skipped, and a mutation score is computed across the run. When the score falls below 70%, the skill warns and exits with code 2 so CI can catch it. Every run persists to a per-project SQLite ledger and JSONL trace under <code>./.logbooks/mutation-testing/</code>, and a human-facing <code>mutation-todos.md</code> is written at the repo root with rationale for each surviving mutant.
+      </p>
+
+      <h2>How it does it</h2>
+      <div class="phase-timeline">
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div class="phase-body">
+            <h4>Discover sources + detect runner</h4>
+            <p>Scans the repo for source files (or honors explicit globs), identifies the test runner from config files, runs the baseline suite to confirm tests pass before mutating.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL</span>{ type: "run", run_id, runner: "pytest",
+  source_globs, started_at }</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">02</div>
+          <div class="phase-body">
+            <h4>Read open gaps from <code>gap_ledger</code></h4>
+            <p>Queries the gap_ledger for currently-open gaps in this project so subagents can avoid re-discovering them.</p>
+            <div class="phase-callout">Read-from-state: gap_ledger informs mutation generation so subagents create novel mutants instead of re-discovering known gaps.</div>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQL</span>SELECT mutant_key, summary
+FROM gap_ledger
+WHERE status = 'open' AND project = ?</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div class="phase-body">
+            <h4>Generate mutations (one subagent per file)</h4>
+            <p>Dispatches one subagent per source file to generate intelligent mutations (conditional flips, boolean negation, arithmetic swaps, return value changes, boundary shifts). Each subagent receives the known-gaps hint.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">JSONL hint passed in</span>known_gaps_for_file: [...]</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">04</div>
+          <div class="phase-body">
+            <h4>Apply → run → restore loop</h4>
+            <p>For each mutation: apply to disk, invoke the test runner, restore the file. Records every result.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">SQLite mutant_results row</span>mutant_key,
+status ∈ {Killed, Survived, Error, Skipped},
+runner_output</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">05</div>
+          <div class="phase-body">
+            <h4>Classify + compute mutation score</h4>
+            <p>Bands: ≥90% strong, 70–90% acceptable (review survivors), &lt;70% weak. Score excludes Skipped.</p>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Formula</span>score = Killed / (Killed + Survived + Errors) × 100</div>
+        </div>
+
+        <div class="phase">
+          <div class="phase-num">06</div>
+          <div class="phase-body">
+            <h4>Patch <code>gap_ledger</code> + write <code>mutation-todos.md</code></h4>
+            <p>Closes gaps for newly-killed mutants; opens gaps for new survivors; reopens previously-fixed mutants that re-survived. Writes the human-facing todo file at repo root.</p>
+            <div class="phase-callout">Patch-the-state: closing a gap (test added, code fixed) is a first-class operation — not just an absence in the next run.</div>
+          </div>
+          <div class="phase-artifact"><span class="phase-artifact-label">Patch</span>gap_ledger.status: open → fixed when killed;
+insert open for new survivors;
+reopen previously-fixed survivors</div>
+        </div>
+      </div>
+
+      <h2>Schema overview</h2>
+      <table class="schema-table">
+        <thead>
+          <tr><th>Layer</th><th>Table</th><th>Mutability</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>History</td><td><code>runs</code></td><td>append-only</td><td>One row per execution</td></tr>
+          <tr><td>Outcomes</td><td><code>mutant_results</code></td><td>append-only</td><td>Every mutant result per run</td></tr>
+          <tr><td>Identity</td><td><code>mutants</code></td><td>append + counter updates</td><td>Canonical mutant (<code>mutant_key</code> from sha256)</td></tr>
+          <tr><td>State</td><td><code>gap_ledger</code></td><td><strong>patchable</strong></td><td>Current open / fixed / acknowledged / wont_fix gaps</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <p>The gap_ledger is a patchable present-tense view of which gaps are still open, independent of run history. (<code>mutation-runs.logbook.md:64</code>)</p>
+      </div>
+
+      <h2>Go deeper</h2>
+      <ul>
+        <li><a href="https://github.com/agentlogbooks/logbooks/tree/main/plugins/mutation-testing" target="_blank" rel="noopener">Plugin README →</a></li>
+        <li><a href="https://github.com/agentlogbooks/logbooks/blob/main/plugins/mutation-testing/skills/mutation-testing/mutation-runs.logbook.md" target="_blank" rel="noopener">Logbook spec →</a></li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  var btn = document.querySelector('.nav-mobile-toggle');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    var open = document.body.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>
+</body>
+</html>
+
